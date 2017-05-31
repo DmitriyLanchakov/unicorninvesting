@@ -1,5 +1,15 @@
-#uncomment and run the next line if you are getting library not found errors
-#install.packages("quantmod","FCNN4R","plyr","GA","forecast")
+source('utils/is.R')
+
+REQUIRED_PACKAGES <- readLines('requirements.txt')
+DEFAULT_MIRROR    <- 'http://cran.us.r-project.org'
+
+for (i in 1:length(REQUIRED_PACKAGES)) {
+  package <- REQUIRED_PACKAGES[i]
+  
+  if ( !is.installed(package) ) {
+    install.packages(package, repos = DEFAULT_MIRROR)
+  }
+}
 
 #clean your environment
 rm(list = ls())
@@ -45,8 +55,8 @@ stocklist <<- featurelist
 #pullstocklist(stocklist)
 
 
-# This is the model explorer script.  Modify this function in modelexploration.R 
-#to play around with the NN model. i.e. add or remove layers, 
+# This is the model explorer script.  Modify this function in modelexploration.R
+#to play around with the NN model. i.e. add or remove layers,
 #change learning algorythm etc. all of it is in predictiveanalytics\modelexploration.R
 # I would like to put this in a config script at some point, but not worth it currently.
 
@@ -54,7 +64,7 @@ for (i in 1:1){
   print(Sys.time())
   NNperformancechart = NULL
   performance = modelexplorer(userid,featurelist,outputdirectory)
-  
+
 
 #check the plots directory for your charts.
 
