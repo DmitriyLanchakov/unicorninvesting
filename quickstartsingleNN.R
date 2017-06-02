@@ -1,11 +1,11 @@
-source('utils/is.R')
+source('util/is.R')
 
 REQUIRED_PACKAGES <- readLines('requirements.txt')
 DEFAULT_MIRROR    <- 'http://cran.us.r-project.org'
 
 for (i in 1:length(REQUIRED_PACKAGES)) {
   package <- REQUIRED_PACKAGES[i]
-  
+
   if ( !is.installed(package) ) {
     install.packages(package, repos = DEFAULT_MIRROR)
   }
@@ -19,7 +19,7 @@ rm(list = ls())
 #setwd("/home/keith/unicorninvesting/unicorninvesting")
 
 if(!exists("modelexplorer", mode="function")) source("./predictiveanalytics/modelexploration.R")
-#if(!exists("rebuildstocklistfeatures", mode="function")) source("./datasetcreation/Generatefeatureslist.R")
+if(!exists("rebuildstocklistfeatures", mode="function")) source("./datasetcreation/Generatefeatureslist.R")
 if(!exists("pullstocklist", mode="function")) source("./datagathering/downloadstockdata.R")
 if(!exists("modelexplorer", mode="function")) source("./predictiveanalytics/modelexploration.R")
 if(!exists("loadportfoliolist", mode="function")) source("./datagathering/downloadstockdata.R")
@@ -30,7 +30,7 @@ if(!exists("mydebug", mode="function")) source("./datacleaning/debugframework.R"
 
 #downloads the stocks that are default in the featurelist.csv
 #this saves the stock data to the data/stockdata directory structure for reference
-#pullstocklist()
+pullstocklist(c("INRUSD"))
 
 #loads your list of features from data/features/featurelist.csv
 #Currently this just pulls the 6 basic data points of EOD stats for the list of stocks and uses them as features.
@@ -43,14 +43,15 @@ portfolioid <<- '3' # forex test portfolio "majors"
 
 
 outputdirectory <<- paste("data/results/", userid,"/", portfolioid, sep = "")
-featurelist <<- loadfeaturelist(userid,portfolioid,10)
-featurelist <<- head(featurelist,40)
-portfoliolist <<- loadportfoliolist(userid,portfolioid)
-NNperformancechart <<- 1000
+featurelist <<- loadfeaturelist(userid,portfolioid,10) # 10 of them
+featurelist <<- head(featurelist,40) # 40 symbols.
+portfoliolist <<- loadportfoliolist(userid,portfolioid) #
+NNperformancechart <<- 1000 # initial seed
 
 #downloads the stocks that are default in the featurelist.csv
 #this saves the stock data to the data/stockdata directory structure for reference
 #I would comment this out after the first run. ;)
+print(featurelist)
 stocklist <<- featurelist
 #pullstocklist(stocklist)
 
@@ -68,7 +69,7 @@ for (i in 1:1){
 
 #check the plots directory for your charts.
 
-  runid <<- gsub(" ", "-", gsub(":", "-", Sys.time())) #generates an identifer to trace through the stack in the format of "2016-11-02-12-16-11"
+  runid <<- gsub(" ", "-", gsub(":", "-", Sys.time())) # generates an identifer to trace through the stack in the format of "2016-11-02-12-16-11"
   plotsdirectory = paste(outputdirectory,"/plots",sep = '')
   dir.create(plotsdirectory)
   myfilesavelocation = paste("./", outputdirectory, "/plots/NNrunid-" ,runid, i , "-netperformance.png", sep = '')

@@ -3,3 +3,8 @@ FCNN4R
 plyr
 GA
 forecast
+RMySQL
+parallel
+doParallel
+taRifx
+PerformanceAnalytics

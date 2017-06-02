@@ -1,4 +1,4 @@
-
+# seperate table, 
 #using FCNN4R for it's ability to copy NNs to each other and stack/run parrellel on the same data, and Pruning on the same set of data.
 trainmodel <- function(runid, numberofstockstouse,minibatchszparam,lambdaparam,gammaparam,momentumparam,epocsparam,netdepthparam,layer2param,layer3param,layer4param,tol_levelparam,learn_rateparam,l2regparam, outputdirectory) {
 #print("Enteringtrainmodel----------")
@@ -158,6 +158,7 @@ mydebug("MyMlpNet Trained")
 mymlpnet_clean <<- mlp_rm_input_neurons(mymlpnet_trained$net, report = FALSE)
 
 #This is where the magic happens.  You take the input for the evalmatrix and pump it into the net to see what it spits out.
+# portfolio 10 rows -> days, stocks -> columns
 mlpeval_eval <<- mlp_eval(mymlpnet_clean$net,evalmatrix[,1:inputlayersize])
 mydebug("MyMlpNet Evaluated")
 

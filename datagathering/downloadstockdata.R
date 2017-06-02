@@ -1,7 +1,5 @@
 library(quantmod)
 library(RMySQL)
-library(parallel)
-library(multicore)
 library(foreach)
 library(parallel)
 library(doParallel)
@@ -14,7 +12,7 @@ cl = makeCluster(no_cores, type = "FORK")
 
 #You have to create a mysql server instance with a db named unicorn for this line to work.(closes current connectiosn first)
 lapply( dbListConnections( dbDriver( drv = "MySQL")), dbDisconnect)
-mydb = dbConnect(MySQL(), user='unicorn', password='n7gtRLHi', dbname='unicorn', host='ec2-54-85-232-216.compute-1.amazonaws.com')
+mydb = dbConnect(MySQL(), user='root', password='toor', dbname='unicorninvesting', host='127.0.0.1')
 
 
 #other useful provided files.
@@ -73,55 +71,57 @@ pullstocklist <- function(x) {
 
 initialstocklist = c(as.vector(x))
 currencylist = read.csv('data/exchangedata/FOREX.csv')[,1]
+print(currencylist)
 currencylist = levels(currencylist)
 #so we don't try to download the currency converstions
 stocklist = setdiff(initialstocklist, currencylist)
-
-
-
-foreach(i=stocklist)%dopar% {
- tryCatch({
-   print(i)
-   downloaddata(i)
- },
- error = function(e){
-  print(paste("ERROR Downloading:", e))
- },
- warning = function(w){
-  print(paste("Warning Downloading:", w))
- }
- )
-}
-
-
-foreach(i=currencylist)%dopar% {
-  tryCatch({
+print(stocklist)
+# 
+# 
+# 
+# foreach(i=stocklist)%dopar% {
+#  tryCatch({
 #    print(i)
-    downloadcurrency(i)
-  },
-  error = function(e){
-    print('ERROR Downloading\n')
-    print(e)
-  },
-  warning = function(w){
-    print('Warning Downloading\n')
-    print(w)
-  }
-  )
-}
-
-#add a USD to USD FOREX stock, just so we can make sure that we have it as a BASE that everything can be converted to at EOD
-#mainly this is just to make sure that it has the current dates etc.
-USDtoUSDdirectory = "./data/stockdata/USDUSD/"
-if(!dir.exists(USDtoUSDdirectory)){
-  dir.create(USDtoUSDdirectory, showWarnings = FALSE, recursive = TRUE, mode = "0777")
-}
-temp = data.frame(read.csv("data/stockdata/USDEUR/stockdata.csv"))
-colnames(temp) <- c("Date", "USDUSD.Adjusted")
-rownames(temp) <- temp[,"Date"]
-temp = temp["USDUSD.Adjusted"]
-temp[,"USDUSD.Adjusted"] = 1
-write.csv(temp, file="data/stockdata/USDUSD/stockdata.csv")
+#    downloaddata(i)
+#  },
+#  error = function(e){
+#   print(paste("ERROR Downloading:", e))
+#  },
+#  warning = function(w){
+#   print(paste("Warning Downloading:", w))
+#  }
+#  )
+# }
+# 
+# 
+# foreach(i=currencylist)%dopar% {
+#   tryCatch({
+# #    print(i)
+#     downloadcurrency(i)
+#   },
+#   error = function(e){
+#     print('ERROR Downloading\n')
+#     print(e)
+#   },
+#   warning = function(w){
+#     print('Warning Downloading\n')
+#     print(w)
+#   }
+#   )
+# }
+# 
+# #add a USD to USD FOREX stock, just so we can make sure that we have it as a BASE that everything can be converted to at EOD
+# #mainly this is just to make sure that it has the current dates etc.
+# USDtoUSDdirectory = "./data/stockdata/USDUSD/"
+# if(!dir.exists(USDtoUSDdirectory)){
+#   dir.create(USDtoUSDdirectory, showWarnings = FALSE, recursive = TRUE, mode = "0777")
+# }
+# temp = data.frame(read.csv("data/stockdata/USDEUR/stockdata.csv"))
+# colnames(temp) <- c("Date", "USDUSD.Adjusted")
+# rownames(temp) <- temp[,"Date"]
+# temp = temp["USDUSD.Adjusted"]
+# temp[,"USDUSD.Adjusted"] = 1
+# write.csv(temp, file="data/stockdata/USDUSD/stockdata.csv")
 
 }
 
