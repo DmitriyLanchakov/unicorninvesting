@@ -76,9 +76,9 @@ currencylist = levels(currencylist)
 #so we don't try to download the currency converstions
 stocklist = setdiff(initialstocklist, currencylist)
 print(stocklist)
-# 
-# 
-# 
+#
+#
+#
 # foreach(i=stocklist)%dopar% {
 #  tryCatch({
 #    print(i)
@@ -92,8 +92,8 @@ print(stocklist)
 #  }
 #  )
 # }
-# 
-# 
+#
+#
 # foreach(i=currencylist)%dopar% {
 #   tryCatch({
 # #    print(i)
@@ -109,7 +109,7 @@ print(stocklist)
 #   }
 #   )
 # }
-# 
+#
 # #add a USD to USD FOREX stock, just so we can make sure that we have it as a BASE that everything can be converted to at EOD
 # #mainly this is just to make sure that it has the current dates etc.
 # USDtoUSDdirectory = "./data/stockdata/USDUSD/"
@@ -168,8 +168,8 @@ loadfeaturelist <- function(userid=1, portfolioname=1, maxfeaturestouse=0){
 
 #convertportfoliolisttodbformat takes something like this and converts it to an object for inserting into the DB
 # loadportfoliolist("data/results/runs/Energyportfolio1")
-# [1] "AAV"   "CKX"   "CVE"   "ENLC"  "MXC"   "NFX"   "NOG"   "PDS"   "PE"    "SDR"  
-# [11] "SDRL"  "TAT"   "TEGP"  "TPLM"  "VNRAP" "YUMA" 
+# [1] "AAV"   "CKX"   "CVE"   "ENLC"  "MXC"   "NFX"   "NOG"   "PDS"   "PE"    "SDR"
+# [11] "SDRL"  "TAT"   "TEGP"  "TPLM"  "VNRAP" "YUMA"
 
 convertportfoliolisttodbformat <- function(userid,portfolio,symbollist){
   formatedportfoliolist=data.frame(userid=userid,portfolioid=portfolio,symbol=symbollist)
@@ -186,7 +186,7 @@ insert_into_unicorn_portfolios_table <- function(x){
 
 #pulls a portfolio from the unicorn_portfolios table
 load_from_unicorn_portfolios_table<-function(userid,portfolioname){
-  
+
   res <- dbSendQuery(mydb, paste("SELECT symbol FROM unicorn_portfolios WHERE userid = ", userid, " AND portfolioid = '", portfolioname,"';", sep = ''))
 #    res <- dbSendQuery(mydb, "SELECT symbol FROM unicorn_portfolios WHERE userid = 1 AND portfolio_name = 'EnergyPortfolio1' ;")
   results = as.list(dbFetch(res))
@@ -214,12 +214,12 @@ insert_into_unicorn_best_featurelist <- function(userid,portfolioname,symbollist
   res <- dbSendQuery(mydb, paste("DELETE FROM unicorn_best_featurelist WHERE userid = ", userid, " AND portfolioid = '", portfolioname,"';", sep = ''))
 #  results = as.list(dbFetch(res))
   dbClearResult(res)
-  
+
   #insert the new "Best" featurelist
   tablename="unicorn_best_featurelist"
   dbWriteTable(mydb,tablename,symbollisttable, field.types = NULL, row.names = FALSE, overwrite = FALSE, append = TRUE)#, ..., allow.keywords = FALSE)
   #need to create some logic here...
- return(0) 
+ return(0)
 }
 
 
@@ -237,12 +237,12 @@ insert_into_unicorn_allocationhistory <- function(userid,portfolio,allocationtab
   #    forimport ='MAKE SURE YOU SET YOUR forimport'
   now <- as.POSIXlt(Sys.time())
   now.str <- format(now,'%Y-%m-%d %H:%M:%S')
-  
+
   temp= data.frame()
   symbols = colnames(allocationtable)
   datetime = now.str
   allocations = allocationtable[1,]
-  
+
   temp = data.frame("userid"= userid, "portfolioid"= portfolio, "Symbol"= symbols, "datetime" = now.str, "allocation"=allocations)
 
   forimport=temp
@@ -256,21 +256,21 @@ insert_into_unicorn_allocationhistory <- function(userid,portfolio,allocationtab
 load_unicorn_allocationhistory <- function(userid,portfolio,recorddate=NULL){
   library(reshape)
   #this needs to updated to support "Latest" when no date is provided.
-  res <- dbSendQuery(mydb, paste("SELECT * FROM unicorn_allocationhistory WHERE userid = ", userid, " AND portfolioid = '", portfolio,"'ORDER BY datetime DESC;", sep = '')) #," AND datetime = '", recorddate 
+  res <- dbSendQuery(mydb, paste("SELECT * FROM unicorn_allocationhistory WHERE userid = ", userid, " AND portfolioid = '", portfolio,"'ORDER BY datetime DESC;", sep = '')) #," AND datetime = '", recorddate
   #    res <- dbSendQuery(mydb, "SELECT symbol FROM unicorn_portfolios WHERE userid = 1 AND portfolio_name = 'EnergyPortfolio1' ;")
   results = dbFetch(res)
   dbClearResult(res)
-  
+
   if(is.na(results[1,1])){
     None = data.frame(date=100,holder=100)
     return(None)
   }
-  
+
   #restructure it into what the callers expect. i.e. a portfolio table
   results = recast(results[,3:5],datetime ~ Symbol)
-  
+
   results = results[order(results$datetime,decreasing = TRUE),]
-  
+
   if (is.null(recorddate)){
     print("Recoddate Is Null")
     return(results)
@@ -288,13 +288,13 @@ insert_into_unicorn_portfolios_details <- function(userid,portfolio,values){
   now <- as.POSIXlt(Sys.time())
   now.str <- format(now,'%Y-%m-%d %H:%M:%S')
   #    forimport ='MAKE SURE YOU SET YOUR forimport'
-  
+
   details = data.frame(matrix(ncol=4,nrow=1))
   names(details)=c("userid","portfolioid","bestperformance","datetime")
   details[1,] = c(userid,portfolio,values,now.str)
   #  details[1,] = c(1,1,-1000,0)
   #  details[1,'datetime']=now.str
-  
+
 #  This function needs to be updated to add the datetime iteself to the records
 
   forimport=details
@@ -305,9 +305,9 @@ insert_into_unicorn_portfolios_details <- function(userid,portfolio,values){
 }
 
 load_unicorn_portfolios_details <- function(userid,portfolio,recorddate=NULL){
-  
+
   #this needs to updated to support "Latest" when no date is provided.
-  res <- dbSendQuery(mydb, paste("SELECT * FROM unicorn_portfolios_details WHERE userid = ", userid, " AND portfolioid = '", portfolio,"'ORDER BY datetime DESC;", sep = '')) #," AND datetime = '", recorddate 
+  res <- dbSendQuery(mydb, paste("SELECT * FROM unicorn_portfolios_details WHERE userid = ", userid, " AND portfolioid = '", portfolio,"'ORDER BY datetime DESC;", sep = '')) #," AND datetime = '", recorddate
   #    res <- dbSendQuery(mydb, "SELECT symbol FROM unicorn_portfolios WHERE userid = 1 AND portfolio_name = 'EnergyPortfolio1' ;")
   results = dbFetch(res)
   dbClearResult(res)
@@ -325,7 +325,7 @@ load_unicorn_portfolios_details <- function(userid,portfolio,recorddate=NULL){
 
 load_unicorn_useridlist <- function(){
   #this needs to updated to support "Latest" when no date is provided.
-  res <- dbSendQuery(mydb, paste("SELECT * FROM unicorn_portfolios ORDER BY userid DESC;", sep = '')) #," AND datetime = '", recorddate 
+  res <- dbSendQuery(mydb, paste("SELECT * FROM unicorn_portfolios ORDER BY userid DESC;", sep = '')) #," AND datetime = '", recorddate
   #    res <- dbSendQuery(mydb, "SELECT symbol FROM unicorn_portfolios WHERE userid = 1 AND portfolio_name = 'EnergyPortfolio1' ;")
   results = dbFetch(res)
   results = unique(results$userid)
@@ -335,7 +335,7 @@ load_unicorn_useridlist <- function(){
 
 load_unicorn_portfoliolist<-function(){
   #this needs to updated to support "Latest" when no date is provided.
-  res <- dbSendQuery(mydb, paste("SELECT * FROM unicorn_portfolios ORDER BY userid DESC;", sep = '')) #," AND datetime = '", recorddate 
+  res <- dbSendQuery(mydb, paste("SELECT * FROM unicorn_portfolios ORDER BY userid DESC;", sep = '')) #," AND datetime = '", recorddate
   #    res <- dbSendQuery(mydb, "SELECT symbol FROM unicorn_portfolios WHERE userid = 1 AND portfolio_name = 'EnergyPortfolio1' ;")
   results = dbFetch(res)
   results = unique(results[,1:2])
@@ -346,19 +346,22 @@ load_unicorn_portfoliolist<-function(){
 load_unicorn_usersportfolios<-function(userid){
 #  mydb = dbConnect(MySQL(), user='unicorn', password='n7gtRLHi', dbname='unicorn', host='ec2-54-85-232-216.compute-1.amazonaws.com')
   #this needs to updated to support "Latest" when no date is provided.
-  res <- dbSendQuery(mydb, paste("SELECT * FROM unicorn_portfolios where userid =", userid, " ORDER BY userid DESC;", sep = '')) #," AND datetime = '", recorddate 
+  res <- dbSendQuery(mydb, paste("SELECT * FROM unicorn_portfolios where userid =", userid, " ORDER BY userid DESC;", sep = '')) #," AND datetime = '", recorddate
   #    res <- dbSendQuery(mydb, "SELECT symbol FROM unicorn_portfolios WHERE userid = 1 AND portfolio_name = 'EnergyPortfolio1' ;")
   results = dbFetch(res)
   results = unique(results$portfolioid)
   dbClearResult(res)
-  if(length(results)==0){results=0}
+  if(length(results)
+
+  ==0){results=0}
   return(results)
+
 }
 
 portfolioisforex <- function(userid,portfolioid){
   #this needs to updated to support "Latest" when no date is provided.
   query = paste("SELECT * FROM unicorn_portfolio_attributes where userid =", userid, " and portfolioid =", portfolioid," ORDER BY userid DESC;", sep = '')
-  res <- dbSendQuery(mydb, query) #," AND datetime = '", recorddate 
+  res <- dbSendQuery(mydb, query) #," AND datetime = '", recorddate
   #    res <- dbSendQuery(mydb, "SELECT symbol FROM unicorn_portfolios WHERE userid = 1 AND portfolio_name = 'EnergyPortfolio1' ;")
   results = dbFetch(res)
   dbClearResult(res)

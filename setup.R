@@ -12,6 +12,13 @@ for (i in 1:length(REQUIRED_PACKAGES)) {
   }
 }
 
-user.register(username = 'achillesrasquinha', firstname = 'Achilles', lastname = 'Rasquinha', email = 'achillesrasquinha@gmail.com', password  = '12345', dob = '1995-08-14', gender = 1)
+# CREATE NEW WORKSPACE
+rm(list = ls())
 
-user.create_portfolio()
+# SET WORKING DIRECTORY
+WORKING_DIR       <- '~/dev/unicorn'
+setwd(WORKING_DIR)
+
+user.register(username = 'achillesrasquinha', firstname = 'Achilles',
+  lastname = 'Rasquinha', email = 'achillesrasquinha@gmail.com',
+  password  = '12345', dob = '1995-08-14', gender = 1)

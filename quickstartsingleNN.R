@@ -1,4 +1,5 @@
 source('util/is.R')
+source('util/log.R')
 
 REQUIRED_PACKAGES <- readLines('requirements.txt')
 DEFAULT_MIRROR    <- 'http://cran.us.r-project.org'
@@ -11,12 +12,14 @@ for (i in 1:length(REQUIRED_PACKAGES)) {
   }
 }
 
-#clean your environment
+# CREATE NEW WORKSPACE
 rm(list = ls())
 
-#While I'm playing with performance... good to chart it on each call
+# SET WORKING DIRECTORY
+WORKING_DIR       <- '~/dev/unicorn'
+setwd(WORKING_DIR)
 
-#setwd("/home/keith/unicorninvesting/unicorninvesting")
+
 
 if(!exists("modelexplorer", mode="function")) source("./predictiveanalytics/modelexploration.R")
 if(!exists("rebuildstocklistfeatures", mode="function")) source("./datasetcreation/Generatefeatureslist.R")
@@ -25,7 +28,6 @@ if(!exists("modelexplorer", mode="function")) source("./predictiveanalytics/mode
 if(!exists("loadportfoliolist", mode="function")) source("./datagathering/downloadstockdata.R")
 if(!exists("loadfeaturelist", mode="function")) source("./datagathering/downloadstockdata.R")
 if(!exists("generatetrainingmatrix", mode="function")) source("./recomendationsystems/modelperformance.R")
-if(!exists("mydebug", mode="function")) source("./datacleaning/debugframework.R")
 
 
 #downloads the stocks that are default in the featurelist.csv
