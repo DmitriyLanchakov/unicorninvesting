@@ -18,13 +18,13 @@ portfolio.get <- function (user, name = NULL) {
   return(result)
 }
 
-portfolio.register_holding <- function (portfolio, type, params) {
+portfolio.add_holding <- function (portfolio, type, params) {
   values      <- list(
     portfolioID = portfolio$ID,
     type        = type
   )
 
-  log.info('portfolio', paste('Registering Holding of type: ', type))
+  log.info('portfolio', paste('Adding a holding of type:', type))
 
   db.insert('holding', values)
 

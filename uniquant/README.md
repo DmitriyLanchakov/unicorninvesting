@@ -32,12 +32,12 @@ You should then have your terminal outputs as follows:
 * #### Entities
   * ##### Users
     * `user.register`
-      A helper function to register new users. Returns a `data.frame` with a single row containing user details. Passwords are **bcrypt hashed**.
+      A helper function to register new users. Returns a `data.frame` with a single row containing user details or `NULL` if a user with a same `username` has been already registered. Passwords are **bcrypt hashed**.
       ```r
       > source('constant.R')    # gender
       > source('entity/user.R')
 
-      > user.register(
+      > user <- user.register(
       +   username  = 'achillesrasquinha',
       +   firstname = 'Achilles',
       +   lastname  = 'Rasquinha',
@@ -51,5 +51,13 @@ You should then have your terminal outputs as follows:
       A helper function to retrieve user information. Requires a `username` and `password`.
       ```r
       > source('entity/user.R')
-      > user.get('achillesrasquinha', '12345')
+      > user <- user.get('achillesrasquinha', '12345')
+      ```
+  * ##### Portfolio
+    * `user.register_portfolio`
+      A helper function to create new portfolio for a said user. Returns a `data.frame` with a single row containing portfolio details
+      ```r
+      > source('entity/user.R')
+      > user <- user.get('achillesrasquinha', '12345')
+      > user.register_portfolio(user, name = 'My Portfolio')
       ```

@@ -32,9 +32,10 @@ if ( !is.null(user) ) {
   if ( !is.null(portfolio) ) {
     log.success('setup', paste('Successfully created portfolio', portname, 'for user', username))
 
-    holding <- portfolio.register_holding(portfolio, type = holding.type.FOREX, params = list(
-        from = forex.USD,
-        to   = forex.CAD
+    holding <- portfolio.add_holding(portfolio, type = holding.type.FOREX, params = list(
+        from   = forex.USD,
+        to     = forex.CAD,
+        amount = 300
     ))
   } else {
     log.danger('setup', paste('Error in creating portfolio', portname, 'for user', username))
