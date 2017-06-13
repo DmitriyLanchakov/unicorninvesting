@@ -48,9 +48,10 @@ You should then have your terminal output as follows:
 * #### Entities
   * ##### Users
     * `user.exists`
+
       A helper function to check whether a user exists based on a given `username`.
 
-      Example:
+      **Example**
       ```r
       > source('entity/user.R')
       > user.exists('achillesrasquinha')
@@ -60,7 +61,10 @@ You should then have your terminal output as follows:
       ```
 
     * `user.register`
+
       A helper function to register new users. Returns a `data.frame` with a single row containing user details or `NULL` if a user with a same `username` or `email` has been already registered. Passwords are **bcrypt hashed**.
+
+      **Example**
       ```r
       > source('constant.R')    # gender
       > source('entity/user.R')
@@ -74,15 +78,26 @@ You should then have your terminal output as follows:
       +   dob       = '1995-08-14',
       +   gender    = gender.MALE
       + )
+        ID          username firstname  lastname                       email
+      1  1 achillesrasquinha  Achilles Rasquinha achillesrasquinha@gmail.com
+                                                            password
+      1 $2a$10$D1i7TYG8wUV2Xint7paEvOxeL56WUOZgVx4.oCaz.L50g5I9jCm06
+                        dob gender                 dor
+      1 1995-08-14 00:00:00      1 2017-06-13 17:01:41
       ```
+
     * `user.get`
-      A helper function to retrieve user information. Requires a `username` and `password`.
+
+      A helper function to retrieve user information. Requires a `username` and `password`. Returns `NULL` if not a valid `username` or `password`
+
+      **Example**
       ```r
       > source('entity/user.R')
       > user <- user.get('achillesrasquinha', '12345')
       ```
   * ##### Portfolio
     * `user.register_portfolio`
+
       A helper function to create new portfolio for a said user. Returns a `data.frame` with a single row containing portfolio details.
       ```r
       > source('entity/user.R')
@@ -90,6 +105,7 @@ You should then have your terminal output as follows:
       > user.register_portfolio(user, name = 'My Portfolio')
       ```
     * `portfolio.get`
+    
       A helper function to retrieve details about all/specific portfolios. Returns a `data.frame` containing portfolio details for a particular user.
       ```r
       > source('entity/user.R')

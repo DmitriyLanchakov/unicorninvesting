@@ -7,47 +7,50 @@ source('util/utils.R')
 source('data/db.R')
 source('entity/portfolio.R')
 
-user.exists   <- function (username) {
-  database    <- db.connect()
-  table       <- paste(db.PREFIX, 'users', sep = '')
+user.get_by_username <- function (username) {
+  database  <- db.connect()
+  table     <- paste(db.PREFIX, 'users', sep = '')
 
-  statement   <- paste("SELECT * FROM ", table, " WHERE username = '", username, "'", sep = '')
+  statement <- paste("SELECT * FROM ", table, " WHERE username = '", username, "'", sep = '')
 
   log.info('user', paste('Executing statement:', statement))
 
-  result      <- dbGetQuery(database, statement)
+  result    <- dbGetQuery(database, statement)
 
   db.disconnect(database)
 
-  exists      <- nrow(result) != 0
+  if ( nrow(result) == 0 ) {
+    return(NULL)
+  } else {
+    return(result)
+  }
+}
+
+user.exists   <- function (username) {
+  result      <- user.get_by_username(username)
+
+  exists      <- !is.null(result)
 
   return(exists)
 }
 
 user.get      <- function (username, password) {
-  database    <- db.connect()
-  table       <- paste(db.PREFIX, 'users', sep = '')
+  result      <- user.get_by_username(username)
 
-  statement   <- paste("SELECT * FROM ", table, " WHERE username = '", username, "'", sep = '')
+  if ( !is.null(result) ) {
+    hashpass  <- result$password
+    validated <- checkpw(password, hashpass)
 
-  log.info('user', paste('Executing statement:', statement))
+    if ( is.true(validated) ) {
+      log.success('user', paste('Validation successful of User:', username))
+    } else {
+      log.danger('user', paste('Validation unsucessful of User:', username))
 
-  result      <- dbGetQuery(database, statement)
-
-  db.disconnect(database)
-
-  hashpass    <- result$password
-  validated   <- checkpw(password, hashpass)
-
-  if ( is.true(validated) ) {
-    log.success('user', paste('Validation successful of User:', username))
-
-    return(result)
-  } else {
-    log.danger('user', paste('Validation unsucessful of User:', username))
-
-    return(NULL)
+      result <- NULL
+    }
   }
+
+  return(result)
 }
 
 user.register <- function (username, firstname, lastname, email, password, dob, gender) {
