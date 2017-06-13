@@ -6,6 +6,7 @@
   * [Database Environment Variables](#database-environment-variables)
 * [Example](#example)
 * [Debugging](#debugging)
+* [Documentation](#documentation)
 
 ### Environment Variables
 * #### General Environment Variables
@@ -27,16 +28,16 @@
 | `UNIQUANT_PASSWORD_SALT`  | `10`                           | A numeric salt value for the **bcrypt** password hashing algorithm. Bigger the number, bigger the complexity for encryption/decryption.
 
 ### Example
-Run the `setup.R` script as follows:
+Run the `example.R` script as follows:
 ```console
-$ Rscript setup.R
+$ Rscript example.R
 ```
 
 ### Debugging
 `uniquant` has a neat color-signaled debugging framework. To launch into debug mode, simply:
 ```r
 > source('util/log.R')
-> log.DEBUG <- TRUE
+> log.DEBUG <<- TRUE
 ```
 
 You should then have your terminal output as follows:
@@ -46,6 +47,18 @@ You should then have your terminal output as follows:
 
 * #### Entities
   * ##### Users
+    * `user.exists`
+      A helper function to check whether a user exists based on a given `username`.
+
+      Example:
+      ```r
+      > source('entity/user.R')
+      > user.exists('achillesrasquinha')
+      [1] TRUE
+      > user.exists('senpai')
+      [1] FALSE
+      ```
+
     * `user.register`
       A helper function to register new users. Returns a `data.frame` with a single row containing user details or `NULL` if a user with a same `username` or `email` has been already registered. Passwords are **bcrypt hashed**.
       ```r

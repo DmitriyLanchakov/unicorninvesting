@@ -5,35 +5,44 @@ source('entity/user.R')
 source('entity/portfolio.R')
 source('entity/holding.R')
 
-mirror      <-  Sys.getenv('UNIQUANT_PACKAGE_MIRROR', DEFAULT_MIRROR)
 log.DEBUG   <<- TRUE
 
 log.info('setup', paste('Installing necessary dependencies:', join(REQUIRED_PACKAGES, ', ')))
-install.package(REQUIRED_PACKAGES, mirror = mirror)
+install.package(REQUIRED_PACKAGES, mirror = PACKAGE_MIRROR)
 
 username    <- 'achillesrasquinha'
 password    <- '12345'
+firstname   <- 'Achilles'
+lastname    <- 'Rasquinha'
+email       <- 'achillesrasquinha@gmail.com'
+dob         <- '1995-08-14'
+gender      <- gender.MALE
+
 portname    <- 'My Portfolio'
 
 if ( !user.exists(username) ) {
-  log.info('setup', paste('Registering a User:', username))
+  log.info('setup', paste('Registering User:', username))
 
   user      <- user.register(
     username  = username,
-    firstname = 'Achilles',
-    lastname  = 'Rasquinha',
-    email     = 'achillesrasquinha@gmail.com',
+    firstname = firstname,
+    lastname  = lastname,
+    email     = email,
     password  = password,
-    dob       = '1995-08-14',
+    dob       = dob,
     gender    = gender.MALE
   )
 
-  log.success('setup', paste('Successfully registered User:', username))
+  if ( !is.null(user) ) {
+    log.success('setup', paste('Successfully registered User:', username))
+  } else {
+    log.danger('setup', paste('Error in registering User:', username))
+  }
 } else {
   user      <- user.get(username, password)
 }
 
-# if ( !is.true(portfolio.exists(user, name = portname)) ) {
+# if ( portfolio.exists(user, name = portname) ) {
 #   portfolio <- user.register_portfolio(user, name = portfolio)
 # } else {
 #   portfolio <- portfolio.get(user, name = portfolio)

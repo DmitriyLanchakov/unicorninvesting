@@ -3,20 +3,11 @@ library(RMySQL)
 source('constant.R')
 source('util/utils.R')
 
-DB_NAME <- Sys.getenv('UNIQUANT_DB_NAME', db.NAME)
-DB_HOST <- Sys.getenv('UNIQUANT_DB_HOST', db.HOSTNAME)
-DB_PORT <- as.numeric(Sys.getenv('UNIQUANT_DB_PORT', db.PORT))
-DB_USER <- Sys.getenv('UNIQUANT_DB_USER', db.USERNAME)
-DB_PASS <- Sys.getenv('UNIQUANT_DB_PASS', db.PASSWORD)
-DB_PRFX <- Sys.getenv('UNIQUANT_DB_PREFIX', paste(db.NAME, '_', sep = ''))
-
-DB_PASS_SALT <- as.numeric(Sys.getenv('UNIQUANT_PASSWORD_SALT', db.PASSWORD_SALT))
-
 #' db.connect
 #'
 #' A database connection wrapper to RMySQL dbConnect
-db.connect    <- function (name = DB_NAME, host = DB_HOST, port = DB_PORT,
-  user = DB_USER, password = DB_PASS) {
+db.connect    <- function (name = db.NAME, host = db.HOSTNAME, port = db.PORT,
+  user = db.USERNAME, password = db.PASSWORD) {
   driver      <- MySQL()
   connection  <- dbConnect(driver, dbname = name, user = user,
     password = password, host = host, port = port)
@@ -34,7 +25,7 @@ db.clear      <- function (result) {
 
 db.insert     <- function (table, values) {
   database    <- db.connect()
-  table       <- paste(DB_PRFX, table, sep = '')
+  table       <- paste(db.PREFIX, table, sep = '')
 
   columns     <- names(values)
 

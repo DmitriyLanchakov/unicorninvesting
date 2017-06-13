@@ -8,7 +8,7 @@ holding.type.FOREX <- 'FOREX'
 
 holding.get   <- function (portfolio, type, params = NULL) {
   database    <- db.connect()
-  table       <- paste(DB_PRFX, 'holding', sep = '')
+  table       <- paste(db.PREFIX, 'holding', sep = '')
 
   statement   <- paste("SELECT * FROM ", table, " WHERE portfolioID = '", portfolio$ID,
     "'", " AND type = '", type, "'", sep = '')
@@ -19,7 +19,7 @@ holding.get   <- function (portfolio, type, params = NULL) {
   holding     <- dbGetQuery(database, statement)
 
   if ( !is.null(params) ) {
-    table     <- paste(DB_PRFX, 'holding_', sapply(type, tolower), sep = '')
+    table     <- paste(db.PREFIX, 'holding_', sapply(type, tolower), sep = '')
     columns   <- names(params)
 
     fcolumns  <- join(paste("`", columns, "`", sep = ''), ', ')

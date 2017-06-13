@@ -9,7 +9,7 @@ source('entity/portfolio.R')
 
 user.exists   <- function (username) {
   database    <- db.connect()
-  table       <- paste(DB_PRFX, 'users', sep = '')
+  table       <- paste(db.PREFIX, 'users', sep = '')
 
   statement   <- paste("SELECT * FROM ", table, " WHERE username = '", username, "'", sep = '')
 
@@ -26,7 +26,7 @@ user.exists   <- function (username) {
 
 user.get      <- function (username, password) {
   database    <- db.connect()
-  table       <- paste(DB_PRFX, 'users', sep = '')
+  table       <- paste(db.PREFIX, 'users', sep = '')
 
   statement   <- paste("SELECT * FROM ", table, " WHERE username = '", username, "'", sep = '')
 
@@ -52,7 +52,7 @@ user.get      <- function (username, password) {
 
 user.register <- function (username, firstname, lastname, email, password, dob, gender) {
   gender      <- assign.if.na(gender, gender.NA)
-  hashpass    <- hashpw(password, gensalt(DB_PASS_SALT))
+  hashpass    <- hashpw(password, gensalt(db.PASSWORD_SALT))
   values      <- list(
     username   = username,
     firstname  = firstname,

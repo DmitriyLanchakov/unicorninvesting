@@ -5,7 +5,7 @@ source('util/log.R')
 
 portfolio.get <- function (user, name = NULL) {
   database    <- db.connect()
-  table       <- paste(DB_PRFX, 'portfolio', sep = '')
+  table       <- paste(db.PREFIX, 'portfolio', sep = '')
 
   statement   <- paste("SELECT * FROM ", table, " WHERE userID = '", user$ID, "'", sep = '')
 
