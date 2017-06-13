@@ -14,5 +14,6 @@ db.USERNAME       <<- 'root'
 db.PASSWORD       <<- 'toor'
 db.PASSWORD_SALT  <<- 10
 
+currencies        <<- read.csv
 forex.USD         <-  'USD'
 forex.CAD         <-  'CAD'

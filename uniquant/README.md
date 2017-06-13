@@ -9,16 +9,22 @@
 
 ### Environment Variables
 * #### General Environment Variables
-  * `UNIQUANT_PACKAGE_MIRROR`: *CRAN mirror to download packages from. (default - http://cran.us.r-project.org)*
+
+| Environment Variable Name | Default                        | Description
+|---------------------------|--------------------------------|-------------
+| `UNIQUANT_PACKAGE_MIRROR` | "http://cran.us.r-project.org" | CRAN mirror to download packages from.
 
 * #### Database Environment Variables
-  * `UNIQUANT_DB_NAME`: Database Name (default - `uniquant`)
-  * `UNIQUANT_DB_HOST`: Host Name for your database (default - `127.0.0.1`)
-  * `UNIQUANT_DB_PORT`: Port Number for your database (default - `0`)
-  * `UNIQUANT_DB_USER`: A database username (default - `root`)
-  * `UNIQUANT_DB_PASS`: Password for the said username (default - `toor`)
-  * `UNIQUANT_DB_PREFIX`: Prefixes for table names (default - `UNIQUANT_DB_NAME_tablename`)
-  * `UNIQUANT_PASSWORD_SALT`: A numeric salt value for the **bcrypt** password hashing algorithm. Bigger the number, bigger the complexity for encryption/decryption. (default - `10`)
+
+| Environment Variable Name | Default                        | Description
+|---------------------------|--------------------------------|-------------
+| `UNIQUANT_DB_NAME`        | `"uniquant"`                   | Database Name
+| `UNIQUANT_DB_HOST`        | `"127.0.0.1"`                  | Host Name for your database
+| `UNIQUANT_DB_PORT`        | `0`                            | Port Number for your database
+| `UNIQUANT_DB_USER`        | `"uniquant_admin"`             | A database username
+| `UNIQUANT_DB_PASS`        | `"12345"`                      | Password for the said username
+| `UNIQUANT_DB_PREFIX`      | `UNIQUANT_DB_NAME_tablename`   | Prefixes for table names
+| `UNIQUANT_PASSWORD_SALT`  | `10`                           | A numeric salt value for the **bcrypt** password hashing algorithm. Bigger the number, bigger the complexity for encryption/decryption.
 
 ### Example
 Run the `setup.R` script as follows:

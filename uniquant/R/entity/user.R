@@ -7,7 +7,7 @@ source('util/utils.R')
 source('data/db.R')
 source('entity/portfolio.R')
 
-user.get      <- function (username, password) {
+user.exists   <- function (username) {
   database    <- db.connect()
   table       <- paste(DB_PRFX, 'users', sep = '')
 
@@ -17,7 +17,22 @@ user.get      <- function (username, password) {
 
   result      <- dbGetQuery(database, statement)
 
-  log.info('user', paste('Found user with username:', username))
+  db.disconnect(database)
+
+  exists      <- nrow(result) != 0
+
+  return(exists)
+}
+
+user.get      <- function (username, password) {
+  database    <- db.connect()
+  table       <- paste(DB_PRFX, 'users', sep = '')
+
+  statement   <- paste("SELECT * FROM ", table, " WHERE username = '", username, "'", sep = '')
+
+  log.info('user', paste('Executing statement:', statement))
+
+  result      <- dbGetQuery(database, statement)
 
   db.disconnect(database)
 
