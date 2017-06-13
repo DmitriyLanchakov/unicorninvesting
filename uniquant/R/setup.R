@@ -1,6 +1,8 @@
 source('util/is.R')
 source('entity/user.R')
+source('entity/portfolio.R')
 source('entity/holding.R')
+source('entity/holding/forex.R')
 
 REQUIRED_PACKAGES <- readLines('assets/dependencies.txt')
 DEFAULT_MIRROR    <- 'http://cran.us.r-project.org'
@@ -17,8 +19,11 @@ user <- user.register(username = 'achillesrasquinha', firstname = 'Achilles',
                       lastname = 'Rasquinha', email = 'achillesrasquinha@gmail.com',
                       password = '12345', dob = '1995-08-14', gender = 1)
 
-if ( user != NULL ) {
+if ( !is.null(user) ) {
   port <- user.register_portfolio(user, name = 'My Portfolio')
 
-  # hold <- holding.register(port, type = holding.type.FOREX)
+  hold <- portfolio.register_holding(port, type = holding.type.FOREX, params = list(
+    from = forex.USD,
+    to   = forex.CAD
+  ))
 }

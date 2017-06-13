@@ -12,7 +12,7 @@ log.DANGER  <- 'log.DANGER'
 #' @examples
 #' log.format('test.R', 'My Message')
 log.format  <- function (tag, message, type = NULL) {
-  statement <- paste(tag, ': ', message)
+  statement <- paste(tag, ': ', message, sep = '')
 
   return(statement)
 }

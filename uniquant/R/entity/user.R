@@ -32,9 +32,11 @@ user.register <- function (username, firstname, lastname, email, password, dob, 
     gender     = gender
   )
 
-  db.insert('users', values)
-
-  user        <- user.get(username)
+  if ( isTRUE(db.insert('users', values)) ) {
+    user      <- user.get(username)
+  } else {
+    user      <- NULL
+  }
 
   return(user)
 }

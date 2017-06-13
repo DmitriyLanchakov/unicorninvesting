@@ -29,31 +29,35 @@ db.clear      <- function (result) {
   dbClearResult(result)
 }
 
-db.insert     <- function (table, list) {
+db.insert     <- function (table, values) {
   database    <- db.connect()
   table       <- paste(DB_PREFIX, table, sep = '')
 
-  fcolumns    <- paste(names(list), collapse = ', ')
-  fvalues     <- paste(paste("'", list, "'", sep = ''), collapse = ', ')
+  columns     <- names(values)
+
+  fcolumns    <- paste(paste("`", columns, "`", sep = ''), collapse = ', ')
+  fvalues     <- paste(paste("'", values,  "'", sep = ''), collapse = ', ')
 
   statement   <- paste('INSERT INTO ', table, ' (', fcolumns, ') VALUES (', fvalues, ')', sep = '')
 
   log.debug(LOGGING_TAG, paste('Executing statement: ', statement, sep = ''))
 
-  result      <- tryCatch(
-                    {
-                      result  <- dbSendQuery(database, statement)
-                    },
-                    error = function (error) {
-                      log.danger(LOGGING_TAG, paste('Unable to execute query: ', statement, ' with error message: ', error, sep = ''))
+  tryCatch(
+      {
+        result <- dbSendQuery(database, statement)
 
-                      return(FALSE)
-                    }
-                  )
+        db.clear(result)
+        db.disconnect(database)
 
+        return(TRUE)
+      },
+      error   = function (error) {
+        log.danger(LOGGING_TAG, paste('Unable to execute query: ', statement, ' with error message: ', error, sep = ''))
+      },
+      finally = function ( ) {
+        db.disconnect(database)
 
-  db.clear(result)
-  db.disconnect(database)
-
-  return(TRUE)
+        return(FALSE)
+      }
+    )
 }

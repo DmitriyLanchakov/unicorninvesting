@@ -3,7 +3,7 @@ library(RMySQL)
 source('data/db.R')
 source('util/log.R')
 
-portfolio.get              <- function (user, name = NULL) {
+portfolio.get <- function (user, name = NULL) {
   database    <- db.connect()
   table       <- paste(DB_PREFIX, 'portfolio', sep = '')
 
@@ -18,6 +18,21 @@ portfolio.get              <- function (user, name = NULL) {
   return(result)
 }
 
-portfolio.register_holding <- function (portfolio, type) {
-  
+portfolio.register_holding <- function (portfolio, type, params) {
+  values      <- list(
+    portfolioID = portfolio$ID,
+    type        = type
+  )
+
+  db.insert('holding', values)
+
+  holding     <- holding.get(portfolio, type)
+
+  values      <- append(list(holdingID = holding$ID), params)
+
+  table       <- paste('holding_', sapply(holding$type, tolower), sep = '')
+
+  db.insert(table, values)
+
+  return(holding)
 }
