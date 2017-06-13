@@ -9,6 +9,11 @@ portfolio.get <- function (user, name = NULL) {
 
   statement   <- paste("SELECT * FROM ", table, " WHERE userID = '", user$ID, "'", sep = '')
 
+  if ( !is.null(name) ) {
+    fname     <- join(paste("'", name, "'", sep = ''), ", ")
+    statement <- paste(statement, " AND name IN (", fname, ")", sep = '')
+  }
+
   log.info('portfolio', paste('Executing statement:', statement))
 
   result      <- dbGetQuery(database, statement)

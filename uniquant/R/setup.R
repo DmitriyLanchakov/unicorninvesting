@@ -27,7 +27,10 @@ if ( !is.null(user) ) {
   log.success('setup', paste('Successfully registered User:', username))
 
   portname  <- 'My Portfolio'
-  portfolio <- user.register_portfolio(user, name = portname)
+  user.register_portfolio(user, name = portname)
+  user.register_portfolio(user, name = 'My Other Portfolio')
+
+  portfolio <- portfolio.get(user, name = portname)
 
   if ( !is.null(portfolio) ) {
     log.success('setup', paste('Successfully created portfolio', portname, 'for user', username))
