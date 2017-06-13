@@ -16,3 +16,9 @@ is.installed  <- function (package) {
 
   return(installed)
 }
+
+is.true       <- function (x) {
+  evaluation  <- x == TRUE
+
+  return(evaluation)
+}

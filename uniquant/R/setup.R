@@ -1,29 +1,29 @@
-source('util/is.R')
+source('constant.R')
+source('util/utils.R')
+
 source('entity/user.R')
-source('entity/portfolio.R')
-source('entity/holding.R')
-source('entity/holding/forex.R')
 
-REQUIRED_PACKAGES <- readLines('assets/dependencies.txt')
-DEFAULT_MIRROR    <- 'http://cran.us.r-project.org'
+mirror      <- Sys.getenv('UNIQUANT_PACKAGE_MIRROR', DEFAULT_MIRROR)
 
-for (i in 1:length(REQUIRED_PACKAGES)) {
-  package <- REQUIRED_PACKAGES[i]
+log.info('setup', paste('Installing necessary dependencies:', join(REQUIRED_PACKAGES, ', ')))
+install.packages(REQUIRED_PACKAGES, mirror = mirror)
 
-  if ( !is.installed(package) ) {
-    install.packages(package, repos = DEFAULT_MIRROR)
-  }
-}
-
-user <- user.register(username = 'achillesrasquinha', firstname = 'Achilles',
-                      lastname = 'Rasquinha', email = 'achillesrasquinha@gmail.com',
-                      password = '12345', dob = '1995-08-14', gender = 1)
+username    <- 'achillesrasquinha'
+log.info('setup', paste('Registering a User:', username))
+user        <- user.register(
+  username  = username,
+  firstname = 'Achilles',
+  lastname  = 'Rasquinha',
+  email     = 'achillesrasquinha@gmail.com',
+  password  = '12345',
+  dob       = '1995-08-14',
+  gender    = gender.MALE
+)
 
 if ( !is.null(user) ) {
-  port <- user.register_portfolio(user, name = 'My Portfolio')
+  log.success('setup', paste('Successfully registered User:', username))
 
-  hold <- portfolio.register_holding(port, type = holding.type.FOREX, params = list(
-    from = forex.USD,
-    to   = forex.CAD
-  ))
+  
+} else {
+  log.danger('setup', paste('Error in registering User:', username))
 }

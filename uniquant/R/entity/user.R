@@ -1,18 +1,18 @@
 library(RMySQL)
 
-source('data/db.R')
-source('util/log.R')
-source('entity/portfolio.R')
+source('constant.R')
+source('util/utils.R')
 
-LOGGING_TAG   <- 'user.R'
+source('data/db.R')
+source('entity/portfolio.R')
 
 user.get      <- function (username) {
   database    <- db.connect()
-  table       <- paste(DB_PREFIX, 'users', sep = '')
+  table       <- paste(DB_PRFX, 'users', sep = '')
 
   statement   <- paste("SELECT * FROM ", table, " WHERE username = '", username, "'", sep = '')
 
-  log.debug(LOGGING_TAG, paste('Executing statement: ', statement, sep = ''))
+  log.info('user', paste('Executing statement:', statement))
 
   result      <- dbGetQuery(database, statement)
 
@@ -22,6 +22,7 @@ user.get      <- function (username) {
 }
 
 user.register <- function (username, firstname, lastname, email, password, dob, gender) {
+  gender      <- assign.if.na(gender, gender.NA)
   values      <- list(
     username   = username,
     firstname  = firstname,
@@ -32,7 +33,9 @@ user.register <- function (username, firstname, lastname, email, password, dob, 
     gender     = gender
   )
 
-  if ( isTRUE(db.insert('users', values)) ) {
+  log.info('user', paste('Registering User with values:', join(values, ', ')))
+
+  if ( is.true(db.insert('users', values)) ) {
     user      <- user.get(username)
   } else {
     user      <- NULL

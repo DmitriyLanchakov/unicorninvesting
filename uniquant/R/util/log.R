@@ -1,7 +1,10 @@
-log.DEBUG  <<- TRUE
-log.INFO    <- 'log.INFO'
-log.WARN    <- 'log.WARN'
-log.DANGER  <- 'log.DANGER'
+source('util/color.R')
+
+log.DEBUG   <<- TRUE
+log.INFO    <-  'info'
+log.SUCCESS <-  'success'
+log.WARN    <-  'warn'
+log.DANGER  <-  'danger'
 
 #' log.format
 #'
@@ -12,16 +15,28 @@ log.DANGER  <- 'log.DANGER'
 #' @examples
 #' log.format('test.R', 'My Message')
 log.format  <- function (tag, message, type = NULL) {
+  if ( !is.null(type) ) {
+    if ( type == log.INFO ) {
+      color <- color.INFO
+    } else if ( type == log.SUCCESS ) {
+      color <- color.SUCCESS
+    } else if ( type == log.DANGER ) {
+      color <- color.DANGER
+    }
+
+    tag     <-  paste(color, tag, color.RESET, sep = '')
+  }
+
   statement <- paste(tag, ': ', message, sep = '')
 
   return(statement)
 }
 
-log.debug   <- function (tag, message) {
+log.output  <- function (string) {
   if (log.DEBUG) {
-    format  <- log.format(tag, message)
+    string  <- paste(paste('[', Sys.time(), ']', sep = ''), string)
 
-    message(format)
+    message(string)
   }
 }
 
@@ -29,7 +44,15 @@ log.info    <- function (tag, message) {
   if (log.DEBUG) {
     format  <- log.format(tag, message, type = log.INFO)
 
-    message(format)
+    log.output(format)
+  }
+}
+
+log.success <- function (tag, message) {
+  if (log.DEBUG) {
+    format  <- log.format(tag, message, type = log.SUCCESS)
+
+    log.output(format)
   }
 }
 
@@ -37,7 +60,7 @@ log.warn    <- function (tag, message) {
   if (log.DEBUG) {
     format  <- log.format(tag, message, type = log.WARN)
 
-    message(format)
+    log.output(format)
   }
 }
 
@@ -45,6 +68,6 @@ log.danger  <- function (tag, message) {
   if (log.DEBUG) {
     format  <- log.format(tag, message, type = log.DANGER)
 
-    message(format)
+    log.output(format)
   }
 }

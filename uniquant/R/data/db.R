@@ -1,13 +1,14 @@
 library(RMySQL)
 
+source('constant.R')
 source('util/log.R')
 
-DB_NAME       <- 'uniquant'
-DB_HOST       <- '127.0.0.1'
-DB_PORT       <- 0
-DB_USER       <- 'root'
-DB_PASS       <- 'toor'
-DB_PREFIX     <<- paste(DB_NAME, '_', sep = '')
+DB_NAME <- Sys.getenv('UNIQUANT_DB_NAME', db.NAME)
+DB_HOST <- Sys.getenv('UNIQUANT_DB_HOST', db.HOSTNAME)
+DB_PORT <- as.numeric(Sys.getenv('UNIQUANT_DB_PORT', db.PORT))
+DB_USER <- Sys.getenv('UNIQUANT_DB_USER', db.USERNAME)
+DB_PASS <- Sys.getenv('UNIQUANT_DB_PASS', db.PASSWORD)
+DB_PRFX <- Sys.getenv('UNIQUANT_DB_PREFIX', paste(db.NAME, '_', sep = ''))
 
 #' db.connect
 #'
@@ -31,33 +32,36 @@ db.clear      <- function (result) {
 
 db.insert     <- function (table, values) {
   database    <- db.connect()
-  table       <- paste(DB_PREFIX, table, sep = '')
+  table       <- paste(DB_PRFX, table, sep = '')
 
   columns     <- names(values)
 
   fcolumns    <- paste(paste("`", columns, "`", sep = ''), collapse = ', ')
-  fvalues     <- paste(paste("'", values,  "'", sep = ''), collapse = ', ')
+  fvalues     <- paste(paste("'",  values, "'", sep = ''), collapse = ', ')
 
-  statement   <- paste('INSERT INTO ', table, ' (', fcolumns, ') VALUES (', fvalues, ')', sep = '')
+  statement   <- paste('INSERT INTO', table, '(', fcolumns, ') VALUES (', fvalues, ')')
 
-  log.debug(LOGGING_TAG, paste('Executing statement: ', statement, sep = ''))
+  log.info('db', paste('Executing statement:', statement))
 
   tryCatch(
       {
         result <- dbSendQuery(database, statement)
+
+        log.success('db', 'Statement executed successfully')
 
         db.clear(result)
         db.disconnect(database)
 
         return(TRUE)
       },
-      error   = function (error) {
-        log.danger(LOGGING_TAG, paste('Unable to execute query: ', statement, ' with error message: ', error, sep = ''))
+      error    = function (error) {
+        error  <- paste('Unable to execute query:', statement, 'with error message', error)
+        log.danger('db', error)
       },
-      finally = function ( ) {
+      finally  = function ( ) {
         db.disconnect(database)
-
-        return(FALSE)
       }
     )
+
+  return(FALSE)
 }
