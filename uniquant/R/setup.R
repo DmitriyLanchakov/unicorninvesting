@@ -2,11 +2,14 @@ source('constant.R')
 source('util/utils.R')
 
 source('entity/user.R')
+source('entity/portfolio.R')
+source('entity/holding.R')
 
-mirror      <- Sys.getenv('UNIQUANT_PACKAGE_MIRROR', DEFAULT_MIRROR)
+mirror      <-  Sys.getenv('UNIQUANT_PACKAGE_MIRROR', DEFAULT_MIRROR)
+log.DEBUG   <<- TRUE
 
 log.info('setup', paste('Installing necessary dependencies:', join(REQUIRED_PACKAGES, ', ')))
-install.packages(REQUIRED_PACKAGES, mirror = mirror)
+install.package(REQUIRED_PACKAGES, mirror = mirror)
 
 username    <- 'achillesrasquinha'
 log.info('setup', paste('Registering a User:', username))
@@ -23,7 +26,19 @@ user        <- user.register(
 if ( !is.null(user) ) {
   log.success('setup', paste('Successfully registered User:', username))
 
-  
+  portname  <- 'My Portfolio'
+  portfolio <- user.register_portfolio(user, name = portname)
+
+  if ( !is.null(portfolio) ) {
+    log.success('setup', paste('Successfully created portfolio', portname, 'for user', username))
+
+    holding <- portfolio.register_holding(portfolio, type = holding.type.FOREX, params = list(
+        from = forex.USD,
+        to   = forex.CAD
+    ))
+  } else {
+    log.danger('setup', paste('Error in creating portfolio', portname, 'for user', username))
+  }
 } else {
   log.danger('setup', paste('Error in registering User:', username))
 }

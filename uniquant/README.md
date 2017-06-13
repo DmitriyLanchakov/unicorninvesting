@@ -10,3 +10,37 @@
 * `UNIQUANT_DB_USER`: A database username (default - `root`)
 * `UNIQUANT_DB_PASS`: Password for the said username (default - `toor`)
 * `UNIQUANT_DB_PREFIX`: Prefixes for table names (default - `UNIQUANT_DB_NAME_tablename`)
+* `UNIQUANT_PASSWORD_SALT`: A numeric salt value for the **bcrypt** password hashing algorithm. Bigger the number, bigger the complexity for encryption/decryption. (default - `10`)
+
+### Example
+Run the `setup.R` script as follows:
+```console
+$ Rscript setup.R
+```
+
+### Documentation
+
+* #### Entities
+  * ##### Users
+    * `user.register`
+      A helper function to register new users. Returns a `data.frame` with a single row containing user details. Passwords are **bcrypt hashed**.
+      ```r
+      > source('constant.R')    # gender
+      > source('entity/user.R')
+
+      > user.register(
+      +   username  = 'achillesrasquinha',
+      +   firstname = 'Achilles',
+      +   lastname  = 'Rasquinha',
+      +   email     = 'achillesrasquinha@gmail.com',
+      +   password  = '12345',
+      +   dob       = '1995-08-14',
+      +   gender    = gender.MALE
+      + )
+      ```
+    * `user.get`
+      A helper function to retrieve user information. Requires a `username` and `password`.
+      ```r
+      > source('entity/user.R')
+      > user.get('achillesrasquinha', '12345')
+      ```

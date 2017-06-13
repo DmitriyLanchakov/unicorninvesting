@@ -1,7 +1,7 @@
 library(RMySQL)
 
 source('constant.R')
-source('util/log.R')
+source('util/utils.R')
 
 DB_NAME <- Sys.getenv('UNIQUANT_DB_NAME', db.NAME)
 DB_HOST <- Sys.getenv('UNIQUANT_DB_HOST', db.HOSTNAME)
@@ -9,6 +9,8 @@ DB_PORT <- as.numeric(Sys.getenv('UNIQUANT_DB_PORT', db.PORT))
 DB_USER <- Sys.getenv('UNIQUANT_DB_USER', db.USERNAME)
 DB_PASS <- Sys.getenv('UNIQUANT_DB_PASS', db.PASSWORD)
 DB_PRFX <- Sys.getenv('UNIQUANT_DB_PREFIX', paste(db.NAME, '_', sep = ''))
+
+DB_PASS_SALT <- as.numeric(Sys.getenv('UNIQUANT_PASSWORD_SALT', db.PASSWORD_SALT))
 
 #' db.connect
 #'
@@ -36,8 +38,8 @@ db.insert     <- function (table, values) {
 
   columns     <- names(values)
 
-  fcolumns    <- paste(paste("`", columns, "`", sep = ''), collapse = ', ')
-  fvalues     <- paste(paste("'",  values, "'", sep = ''), collapse = ', ')
+  fcolumns    <- join(paste("`", columns, "`", sep = ''), ', ')
+  fvalues     <- join(paste("'",  values, "'", sep = ''), ', ')
 
   statement   <- paste('INSERT INTO', table, '(', fcolumns, ') VALUES (', fvalues, ')')
 

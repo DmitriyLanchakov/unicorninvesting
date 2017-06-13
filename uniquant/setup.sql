@@ -15,8 +15,8 @@ CREATE TABLE `uniquant_users` (
   `email`       VARCHAR(320)   NOT NULL UNIQUE,
   `password`    VARCHAR(255)   NOT NULL,
   `dob`         DATETIME       NOT NULL,
-  `gender`      TINYINT	       NOT NULL
-  -- `dor`         DATETIME     NOT NULL -- date of registration
+  `gender`      TINYINT	       NOT NULL,
+  `dor`         DATETIME       NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE `uniquant_portfolio` (

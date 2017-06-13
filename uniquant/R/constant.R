@@ -12,3 +12,7 @@ db.HOSTNAME       <<- '127.0.0.1'
 db.PORT           <<- 0
 db.USERNAME       <<- 'root'
 db.PASSWORD       <<- 'toor'
+db.PASSWORD_SALT  <<- 10
+
+forex.USD         <-  'USD'
+forex.CAD         <-  'CAD'

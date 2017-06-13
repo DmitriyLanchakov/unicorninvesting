@@ -1,6 +1,6 @@
 source('util/color.R')
 
-log.DEBUG   <<- TRUE
+log.DEBUG   <<- FALSE
 log.INFO    <-  'info'
 log.SUCCESS <-  'success'
 log.WARN    <-  'warn'
