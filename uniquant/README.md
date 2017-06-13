@@ -18,6 +18,15 @@ Run the `setup.R` script as follows:
 $ Rscript setup.R
 ```
 
+### Logging
+`uniquant` has a neat color-coded logging framework. To launch into debug mode, simply:
+```r
+> log.DEBUG <- TRUE
+```
+
+You should then have your terminal outputs as follows:
+![](.github/logging.png)
+
 ### Documentation
 
 * #### Entities
