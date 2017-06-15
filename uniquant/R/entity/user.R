@@ -46,7 +46,7 @@ user.get      <- function (username, password) {
     } else {
       log.danger('user', paste('Validation unsucessful of User:', username))
 
-      result <- NULL
+      result  <- NULL
     }
   }
 
@@ -75,21 +75,4 @@ user.register <- function (username, firstname, lastname, email, password, dob, 
   }
 
   return(user)
-}
-
-user.register_portfolio <- function (user, name) {
-  log.info('user', paste('Registering Portfolio for User: ', user$username))
-
-  values      <- list(
-    userID     = user$ID,
-    name       = name
-  )
-
-  if ( is.true(db.insert('portfolio', values)) ) {
-    portfolio <- portfolio.get(user, name)
-  } else {
-    portfolio <- NULL
-  }
-
-  return(portfolio)
 }

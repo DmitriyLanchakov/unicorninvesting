@@ -14,3 +14,10 @@ db.USERNAME       <<- Sys.getenv('UNIQUANT_DB_USER', 'root')
 db.PASSWORD       <<- Sys.getenv('UNIQUANT_DB_PASS', 'toor')
 db.PASSWORD_SALT  <<- as.numeric(Sys.getenv('UNIQUANT_PASSWORD_SALT', 10))
 db.PREFIX         <<- Sys.getenv('UNIQUANT_DB_PREFIX', paste(db.NAME, '_', sep = ''))
+
+currencies         <- readLines('assets/data/currencies.txt')
+for (i in 1:length(currencies)) {
+  code <- currencies[i]
+
+  assign(paste('forex.', code, sep = ''), code, envir = .GlobalEnv)
+}

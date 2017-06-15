@@ -42,14 +42,21 @@ if ( !user.exists(username) ) {
   user      <- user.get(username, password)
 }
 
-if ( portfolio.exists(user, name = portname) ) {
-  portfolio <- user.register_portfolio(user, name = portfolio)
-} else {
-  portfolio <- portfolio.get(user, name = portfolio)
+portfolio   <- portfolio.get(user, name = portname)
+if ( is.null(portfolio) ) {
+  log.info('setup', paste('Portfolio "', portname, '" does not exist.', sep = ''))
+
+  portfolio <- portfolio.register(user, name = portname)
 }
 
-holding <- portfolio.add_holding(portfolio, type = holding.type.FOREX, params = list(
+holding     <- holding.add(portfolio, type = holding.FOREX, params = list(
     from   = forex.USD,
     to     = forex.CAD,
     amount = 300
 ))
+holding     <- holding.add(portfolio, type = holding.FOREX, params = list(
+    from   = forex.INR,
+    to     = forex.USD,
+    amount = 500
+))
+holding     <- holding.get(portfolio, type = holding.FOREX)

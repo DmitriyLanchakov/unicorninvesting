@@ -95,17 +95,19 @@ You should then have your terminal output as follows:
       > source('entity/user.R')
       > user <- user.get('achillesrasquinha', '12345')
       ```
+
   * ##### Portfolio
-    * `user.register_portfolio`
+    * `portfolio.register`
 
       A helper function to create new portfolio for a said user. Returns a `data.frame` with a single row containing portfolio details.
       ```r
       > source('entity/user.R')
       > user <- user.get('achillesrasquinha', '12345')
-      > user.register_portfolio(user, name = 'My Portfolio')
+      > portfolio.register(user, name = 'My Portfolio')
       ```
+
     * `portfolio.get`
-    
+
       A helper function to retrieve details about all/specific portfolios. Returns a `data.frame` containing portfolio details for a particular user.
       ```r
       > source('entity/user.R')
@@ -123,3 +125,43 @@ You should then have your terminal output as follows:
       > portfolio.get(user, name = "My Portfolio")
         ID userID               name
       1  1      1       My Portfolio
+      ```
+
+  * ##### Holding
+    * `holding.add`
+
+      A helper function to add a holding to a given portfolio.
+
+      **Example**
+      ```r
+      > source('constant.R')
+      > source('entity/user.R')
+      > source('entity/portfolio.R')
+      > source('entity/holding.R')
+
+      > user      <- user.get('achillesrasquinha', '12345')
+      > portfolio <- portfolio.get(user, name = 'My Portfolio')
+      > holding   <- holding.add(portfolio, type = holding.FOREX, params = list(
+      +   from   = forex.USD,
+      +   to     = forex.CAD,
+      +   amount = 300  
+      + ))
+      ```
+
+    * `holding.get`
+
+      A helper function to add a holding to a given portfolio.
+
+      **Example**
+      ```r
+      > source('entity/user.R')
+      > source('entity/portfolio.R')
+      > source('entity/holding.R')
+
+      > user      <- user.get('achillesrasquinha', '12345')
+      > portfolio <- portfolio.get(user, name = 'My Portfolio')
+      > holding   <- holding.add(portfolio, type = holding.FOREX)
+        ID portfolioID  type from  to amount
+      1  1           1 FOREX  USD CAD    300
+      2  1           1 FOREX  INR USD    500
+      ```
