@@ -1,4 +1,3 @@
 RMySQL
 bcrypt
-rvest
-ggplot2
+stringr

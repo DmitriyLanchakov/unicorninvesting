@@ -5,7 +5,7 @@ source('entity/user.R')
 source('entity/portfolio.R')
 source('entity/holding.R')
 
-source('data/download.R')
+source('data/cache.R')
 
 log.DEBUG   <<- TRUE
 
@@ -48,12 +48,12 @@ if ( is.null(portfolio) ) {
   portfolio <- portfolio.register(user, name = portname)
 }
 
-holding     <- holding.add(portfolio, type = holding.FOREX, params = list(
+holding.add(portfolio, type = holding.FOREX, params = list(
     from   = forex.USD,
     to     = forex.CAD,
     amount = 300
 ))
-holding     <- holding.add(portfolio, type = holding.FOREX, params = list(
+holding.add(portfolio, type = holding.FOREX, params = list(
     from   = forex.INR,
     to     = forex.USD,
     amount = 500
@@ -62,4 +62,4 @@ holding     <- holding.add(portfolio, type = holding.FOREX, params = list(
 holding     <- holding.get(portfolio, type = holding.FOREX)
 pairs       <- paste(holding$from, holding$to, sep = "/")
 
-download.FOREX(pairs)
+cache.FOREX(pairs)
