@@ -174,31 +174,31 @@ You should then have your terminal output as follows:
 
       > user      <- user.get('achillesrasquinha', '12345')
       > portfolio <- portfolio.get(user, name = 'My Portfolio')
-      > holding   <- holding.add(portfolio, type = holding.FOREX)
+      > holding.add(portfolio, type = holding.FOREX)
         ID portfolioID  type from  to amount
       1  1           1 FOREX  USD CAD    300
       2  1           1 FOREX  INR USD    500
       ```
 
 * #### Data
-  * ##### Download
-    * `download.FOREX`
+  * ##### Cache
+    * `cache.FOREX`
 
-      A download helper to cache a list of forex symbols.
+      A cache helper to cache a list of forex symbols.
 
       **Example**
       ```r
       > source('entity/user.R')
       > source('entity/portfolio.R')
       > source('entity/holding.R')
-      > source('data/download.R')
+      > source('data/cache.R')
 
       > user      <- user.get('achillesrasquinha', '12345')
       > portfolio <- portfolio.get(user, name = 'My Portfolio')
       > holding   <- holding.get(portfolio, type = holding.FOREX)
       > pairs     <- paste(holding$from, holding$to, sep = "/")
 
-      > download.FOREX(pairs)
+      > cache.FOREX(pairs)
       ```
 
   * ##### Scraper
