@@ -22,9 +22,3 @@ is.true       <- function (x) {
 
   return(evaluation)
 }
-
-is.empty      <- function (x) {
-  evaluation  <- length(x) == 0
-
-  return(evaluation)
-}

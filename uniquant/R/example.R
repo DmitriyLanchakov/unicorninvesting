@@ -5,10 +5,9 @@ source('entity/user.R')
 source('entity/portfolio.R')
 source('entity/holding.R')
 
-log.DEBUG   <<- TRUE
+source('data/download.R')
 
-log.info('setup', paste('Installing necessary dependencies:', join(REQUIRED_PACKAGES, ', ')))
-install.package(REQUIRED_PACKAGES, mirror = PACKAGE_MIRROR)
+log.DEBUG   <<- TRUE
 
 username    <- 'achillesrasquinha'
 password    <- '12345'
@@ -59,4 +58,8 @@ holding     <- holding.add(portfolio, type = holding.FOREX, params = list(
     to     = forex.USD,
     amount = 500
 ))
+
 holding     <- holding.get(portfolio, type = holding.FOREX)
+pairs       <- paste(holding$from, holding$to, sep = "/")
+
+download.FOREX(pairs)

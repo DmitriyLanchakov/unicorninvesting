@@ -15,7 +15,13 @@ db.PASSWORD       <<- Sys.getenv('UNIQUANT_DB_PASS', 'toor')
 db.PASSWORD_SALT  <<- as.numeric(Sys.getenv('UNIQUANT_PASSWORD_SALT', 10))
 db.PREFIX         <<- Sys.getenv('UNIQUANT_DB_PREFIX', paste(db.NAME, '_', sep = ''))
 
-currencies         <- readLines('assets/data/currencies.txt')
+path.CACHE        <<- Sys.getenv('UNIQUANT_CACHEDIR', file.path(path.expand("~"), "_uniquant"))
+path.ROOT         <<- normalizePath(".")
+path.ASSETS       <<- file.path(path.ROOT, "assets")
+path.DATA         <<- file.path(path.ASSETS, "data")
+path.SCRAPERS     <<- file.path(path.ROOT, "data", "scrapers")
+
+currencies         <- readLines(file.path(path.DATA, "currencies.txt"))
 for (i in 1:length(currencies)) {
   code <- currencies[i]
 

@@ -43,3 +43,13 @@ CREATE TABLE `uniquant_holding_forex` (
   `amount`      DECIMAL(10, 2) NOT NULL,
   FOREIGN KEY   (`holdingID`)  REFERENCES `uniquant_holding`(`ID`)
 );
+
+CREATE TABLE `uniquant_history` (
+  `ID`          BIGINT(20)     NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `timestamp`   DATETIME       NOT NULL,
+  `symbol`      VARCHAR(3)     NOT NULL,
+  `open`        DECIMAL(10, 2),
+  `high`        DECIMAL(10, 2),
+  `low`         DECIMAL(10, 2),
+  `close`       DECIMAL(10, 2)
+);

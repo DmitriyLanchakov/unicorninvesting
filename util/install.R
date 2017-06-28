@@ -7,12 +7,12 @@ source('util/is.R')
 #' @param string mirror
 #' @examples
 #' install.packages(c("ggplot2", "RMySQL"))
-install.package <- function (packages, mirror, dependencies = FALSE) {
+install.package <- function (packages, mirror) {
   for (i in 1:length(packages)) {
     package <- packages[i]
 
     if ( !is.installed(package) ) {
-      install.packages(package, repos = mirror, dependencies = dependencies)
+      install.packages(package, repos = mirror)
     }
   }
 }

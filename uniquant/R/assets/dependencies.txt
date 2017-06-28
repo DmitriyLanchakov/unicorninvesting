@@ -1,3 +1,4 @@
 RMySQL
 bcrypt
+rvest
 ggplot2

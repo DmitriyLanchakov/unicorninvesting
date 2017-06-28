@@ -1,23 +1,23 @@
 source('util/is.R')
 source('util/log.R')
 
-REQUIRED_PACKAGES <- readLines('requirements.txt')
-DEFAULT_MIRROR    <- 'http://cran.us.r-project.org'
+# REQUIRED_PACKAGES <- readLines('requirements.txt')
+# DEFAULT_MIRROR    <- 'http://cran.us.r-project.org'
+#
+# for (i in 1:length(REQUIRED_PACKAGES)) {
+#   package <- REQUIRED_PACKAGES[i]
+#
+#   if ( !is.installed(package) ) {
+#     install.packages(package, repos = DEFAULT_MIRROR)
+#   }
+# }
 
-for (i in 1:length(REQUIRED_PACKAGES)) {
-  package <- REQUIRED_PACKAGES[i]
-
-  if ( !is.installed(package) ) {
-    install.packages(package, repos = DEFAULT_MIRROR)
-  }
-}
-
-# CREATE NEW WORKSPACE
-rm(list = ls())
-
-# SET WORKING DIRECTORY
-WORKING_DIR       <- '~/dev/unicorn'
-setwd(WORKING_DIR)
+# # CREATE NEW WORKSPACE
+# rm(list = ls())
+#
+# # SET WORKING DIRECTORY
+# WORKING_DIR       <- '~/dev/unicorn'
+# setwd(WORKING_DIR)
 
 
 

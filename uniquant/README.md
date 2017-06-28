@@ -1,5 +1,12 @@
 # uniquant
 
+### Installation
+`uniquant` depends on the `RMySQL` package and hence requires `MySQL` installed.
+Then go ahead and install `RMySQL` as follows:
+```console
+$ sudo apt-get install r-cran-mysql
+```
+
 ### Table of Contents
 * [Environment Variables](#environment-variables)
   * [General Environment Variables](#general-environment-variables)
@@ -14,6 +21,7 @@
 | Environment Variable Name | Default                        | Description
 |---------------------------|--------------------------------|-------------
 | `UNIQUANT_PACKAGE_MIRROR` | "http://cran.us.r-project.org" | CRAN mirror to download packages from.
+| `UNIQUANT_CACHEDIR`       | "$HOMEDIR/.uniquant"           | A cache directory for uniquant.
 
 * #### Database Environment Variables
 
@@ -164,4 +172,13 @@ You should then have your terminal output as follows:
         ID portfolioID  type from  to amount
       1  1           1 FOREX  USD CAD    300
       2  1           1 FOREX  INR USD    500
+      ```
+
+* Data
+  * Scrapers
+    * `histdata`
+      A `histdata` scraper crawls, scrapes and downloads all available files from [histdata.com](http://www.histdata.com) into `UNIQUANT_CACHEDIR/histdata`.
+      **Example**
+      ```console
+      $ python R/data/scrapers/histdata.py
       ```

@@ -49,12 +49,15 @@ downloadcurrency <- function(x){
   write.csv(thisforex, file=writelocation)
 }
 
+# DOWNLOADS data from quantmod and saves it.
 downloaddata <- function(x){
 #    print(x)
     symbol_name = x
+      # quantmod
       getSymbols(symbol_name)
       symbol = get(symbol_name)
       #sessionlabel = paste(symbol_name, Sys.Date(), sep = '_', collapse = '_')
+
       adjusted = data.frame(adjustOHLC(symbol, symbol.name=symbol_name))
 
     writelocationarray = c('data/stockdata/', symbol_name,'/')
@@ -69,59 +72,62 @@ downloaddata <- function(x){
 
 pullstocklist <- function(x) {
 
+# the initil input vector
 initialstocklist = c(as.vector(x))
+# read from avaialable forex
 currencylist = read.csv('data/exchangedata/FOREX.csv')[,1]
 print(currencylist)
 currencylist = levels(currencylist)
+print(currencylist)
 #so we don't try to download the currency converstions
+# DIFF(A, B) all in A but not B
 stocklist = setdiff(initialstocklist, currencylist)
-print(stocklist)
-#
-#
-#
-# foreach(i=stocklist)%dopar% {
-#  tryCatch({
+
+
+# downloads data from downloaddata function
+foreach(i=stocklist)%dopar% {
+ tryCatch({
+   print(i)
+   downloaddata(i)
+ },
+ error = function(e){
+  print(paste("ERROR Downloading:", e))
+ },
+ warning = function(w){
+  print(paste("Warning Downloading:", w))
+ }
+ )
+}
+
+
+foreach(i=currencylist)%dopar% {
+  tryCatch({
 #    print(i)
-#    downloaddata(i)
-#  },
-#  error = function(e){
-#   print(paste("ERROR Downloading:", e))
-#  },
-#  warning = function(w){
-#   print(paste("Warning Downloading:", w))
-#  }
-#  )
-# }
-#
-#
-# foreach(i=currencylist)%dopar% {
-#   tryCatch({
-# #    print(i)
-#     downloadcurrency(i)
-#   },
-#   error = function(e){
-#     print('ERROR Downloading\n')
-#     print(e)
-#   },
-#   warning = function(w){
-#     print('Warning Downloading\n')
-#     print(w)
-#   }
-#   )
-# }
-#
-# #add a USD to USD FOREX stock, just so we can make sure that we have it as a BASE that everything can be converted to at EOD
-# #mainly this is just to make sure that it has the current dates etc.
-# USDtoUSDdirectory = "./data/stockdata/USDUSD/"
-# if(!dir.exists(USDtoUSDdirectory)){
-#   dir.create(USDtoUSDdirectory, showWarnings = FALSE, recursive = TRUE, mode = "0777")
-# }
-# temp = data.frame(read.csv("data/stockdata/USDEUR/stockdata.csv"))
-# colnames(temp) <- c("Date", "USDUSD.Adjusted")
-# rownames(temp) <- temp[,"Date"]
-# temp = temp["USDUSD.Adjusted"]
-# temp[,"USDUSD.Adjusted"] = 1
-# write.csv(temp, file="data/stockdata/USDUSD/stockdata.csv")
+    downloadcurrency(i)
+  },
+  error = function(e){
+    print('ERROR Downloading\n')
+    print(e)
+  },
+  warning = function(w){
+    print('Warning Downloading\n')
+    print(w)
+  }
+  )
+}
+
+#add a USD to USD FOREX stock, just so we can make sure that we have it as a BASE that everything can be converted to at EOD
+#mainly this is just to make sure that it has the current dates etc.
+USDtoUSDdirectory = "./data/stockdata/USDUSD/"
+if(!dir.exists(USDtoUSDdirectory)){
+  dir.create(USDtoUSDdirectory, showWarnings = FALSE, recursive = TRUE, mode = "0777")
+}
+temp = data.frame(read.csv("data/stockdata/USDEUR/stockdata.csv"))
+colnames(temp) <- c("Date", "USDUSD.Adjusted")
+rownames(temp) <- temp[,"Date"]
+temp = temp["USDUSD.Adjusted"]
+temp[,"USDUSD.Adjusted"] = 1
+write.csv(temp, file="data/stockdata/USDUSD/stockdata.csv")
 
 }
 
@@ -136,6 +142,7 @@ loadportfoliolist <- function(userid,portfolio){
 #  portfoliolist <- gsub(" ", "", portfoliolist)
 #  portfoliolist <- sort(portfoliolist)
   portfoliolist <- load_from_unicorn_portfolios_table(userid,portfolio)
+  print(portfoliolist)
   return(portfoliolist)
 }
 

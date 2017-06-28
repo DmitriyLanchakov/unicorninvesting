@@ -8,9 +8,3 @@ join     <- function (list, seperator) {
 
   return(string)
 }
-
-urljoin  <- function (list) {
-  string <- join(list, seperator = '/')
-
-  return(string)
-}
