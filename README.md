@@ -1,19 +1,20 @@
 # uniquant
 
-### Installation
-`uniquant` depends on the `RMySQL` package and hence requires `MySQL` installed.
-Then go ahead and install `RMySQL` as follows:
-```console
-$ sudo apt-get install r-cran-mysql
-```
-
 ### Table of Contents
+* [Installation](#installation)
 * [Environment Variables](#environment-variables)
   * [General Environment Variables](#general-environment-variables)
   * [Database Environment Variables](#database-environment-variables)
 * [Example](#example)
 * [Debugging](#debugging)
 * [Documentation](#documentation)
+
+### Installation
+Go ahead and install necessary dependencies:
+* Python Dependencies
+  ```console
+  $ pip install -r requirements.txt
+  ```
 
 ### Environment Variables
 * #### General Environment Variables
@@ -36,6 +37,11 @@ $ sudo apt-get install r-cran-mysql
 | `UNIQUANT_PASSWORD_SALT`  | `10`                           | A numeric salt value for the **bcrypt** password hashing algorithm. Bigger the number, bigger the complexity for encryption/decryption.
 
 ### Example
+Run the `setup.R` script as follows:
+```console
+$ Rscript setup.R
+```
+
 Run the `example.R` script as follows:
 ```console
 $ Rscript example.R
@@ -174,10 +180,32 @@ You should then have your terminal output as follows:
       2  1           1 FOREX  INR USD    500
       ```
 
-* Data
-  * Scrapers
+* #### Data
+  * ##### Download
+    * `download.FOREX`
+
+      A download helper to cache a list of forex symbols.
+
+      **Example**
+      ```r
+      > source('entity/user.R')
+      > source('entity/portfolio.R')
+      > source('entity/holding.R')
+      > source('data/download.R')
+
+      > user      <- user.get('achillesrasquinha', '12345')
+      > portfolio <- portfolio.get(user, name = 'My Portfolio')
+      > holding   <- holding.get(portfolio, type = holding.FOREX)
+      > pairs     <- paste(holding$from, holding$to, sep = "/")
+
+      > download.FOREX(pairs)
+      ```
+      
+  * ##### Scraper
     * `histdata`
-      A `histdata` scraper crawls, scrapes and downloads all available files from [histdata.com](http://www.histdata.com) into `UNIQUANT_CACHEDIR/histdata`.
+
+      A `histdata` scraper crawls, scrapes and downloads all available files from [histdata.com](http://www.histdata.com) into the `UNIQUANT_CACHEDIR/histdata` directory.
+
       **Example**
       ```console
       $ python R/data/scrapers/histdata.py
