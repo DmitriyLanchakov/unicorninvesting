@@ -1,0 +1,73 @@
+source('util/color.R')
+
+log.DEBUG   <<- FALSE
+log.INFO    <-  'info'
+log.SUCCESS <-  'success'
+log.WARN    <-  'warn'
+log.DANGER  <-  'danger'
+
+#' log.format
+#'
+#' Generates a format string for a given tag and message.
+#' @param string tag
+#' @param string message
+#' @return string formatted log string
+#' @examples
+#' log.format('test.R', 'My Message')
+log.format  <- function (tag, message, type = NULL) {
+  if ( !is.null(type) ) {
+    if ( type == log.INFO ) {
+      color <- color.INFO
+    } else if ( type == log.SUCCESS ) {
+      color <- color.SUCCESS
+    } else if ( type == log.DANGER ) {
+      color <- color.DANGER
+    }
+
+    tag     <-  paste(color, tag, color.RESET, sep = '')
+  }
+
+  statement <- paste(tag, ': ', message, sep = '')
+
+  return(statement)
+}
+
+log.output  <- function (string) {
+  if (log.DEBUG) {
+    string  <- paste(paste('[', Sys.time(), ']', sep = ''), string)
+
+    message(string)
+  }
+}
+
+log.info    <- function (tag, message) {
+  if (log.DEBUG) {
+    format  <- log.format(tag, message, type = log.INFO)
+
+    log.output(format)
+  }
+}
+
+log.success <- function (tag, message) {
+  if (log.DEBUG) {
+    format  <- log.format(tag, message, type = log.SUCCESS)
+
+    log.output(format)
+  }
+}
+
+log.warn    <- function (tag, message) {
+  if (log.DEBUG) {
+    format  <- log.format(tag, message, type = log.WARN)
+
+    log.output(format)
+  }
+}
+
+log.danger  <- function (tag, message) {
+  if (log.DEBUG) {
+    format  <- log.format(tag, message, type = log.DANGER)
+
+    log.output(format)
+  }
+}
