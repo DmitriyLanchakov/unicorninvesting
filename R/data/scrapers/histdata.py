@@ -42,7 +42,7 @@ class HistDataSpider(CrawlSpider):
             response = response,
             formid   = 'file_down',
             formdata = data,
-            callback = lambda response: return write(response, HistDataSpider.name)
+            callback = lambda response: write(response, HistDataSpider.name)
         )
 
         return req
