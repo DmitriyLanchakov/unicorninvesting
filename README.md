@@ -22,7 +22,7 @@ Go ahead and install necessary dependencies:
 | Environment Variable Name | Default                        | Description
 |---------------------------|--------------------------------|-------------
 | `UNIQUANT_PACKAGE_MIRROR` | "http://cran.us.r-project.org" | CRAN mirror to download packages from.
-| `UNIQUANT_CACHEDIR`       | "$HOMEDIR/.uniquant"           | A cache directory for uniquant.
+| `UNIQUANT_CACHEDIR`       | "`$HOMEDIR`/_uniquant"         | A cache directory for uniquant.
 
 * #### Database Environment Variables
 
@@ -200,7 +200,7 @@ You should then have your terminal output as follows:
 
       > download.FOREX(pairs)
       ```
-      
+
   * ##### Scraper
     * `histdata`
 
