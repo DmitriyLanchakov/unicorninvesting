@@ -1,3 +1,4 @@
+devtools
 RMySQL
 bcrypt
 stringr

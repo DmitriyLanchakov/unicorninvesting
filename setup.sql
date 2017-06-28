@@ -46,10 +46,12 @@ CREATE TABLE `uniquant_holding_forex` (
 
 CREATE TABLE `uniquant_history` (
   `ID`          BIGINT(20)     NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `timestamp`   DATETIME       NOT NULL,
+  `datetime`    DATETIME       NOT NULL,
   `symbol`      VARCHAR(3)     NOT NULL,
-  `open`        DECIMAL(10, 2),
-  `high`        DECIMAL(10, 2),
-  `low`         DECIMAL(10, 2),
-  `close`       DECIMAL(10, 2)
+  `open`        DECIMAL(10, 6),
+  `high`        DECIMAL(10, 6),
+  `low`         DECIMAL(10, 6),
+  `close`       DECIMAL(10, 6),
+  `volume`      BIGINT(20),
+  UNIQUE KEY    `unique_key`(`datetime`, `symbol`)
 );
