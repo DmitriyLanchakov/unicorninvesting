@@ -1,7 +1,7 @@
 source('constant.R')
 source('util/utils.R')
 
-download.histdata <- function (params = list()) {
+download.histdata <- function (refresh = FALSE) {
   path            <- file.path(path.SCRAPERS, "histdata.py")
   command         <- paste("python", path)
 

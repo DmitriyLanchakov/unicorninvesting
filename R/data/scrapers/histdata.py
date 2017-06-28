@@ -10,25 +10,7 @@ from scrapy.crawler        import CrawlerProcess
 from bs4                   import BeautifulSoup
 
 # imports - module imports
-from utils                 import makedirs
-
-DEFAULT_CACHEDIR = os.path.join(os.path.expanduser('~'), '_uniquant')
-
-def write_file(response):
-    parameters = response.headers['Content-Disposition'].decode('utf-8')
-    filename   = parameters.split('=')[-1]
-
-    dircache   = os.getenv('UNIQUANT_CACHEDIR', DEFAULT_CACHEDIR)
-    dirdata    = os.path.join(dircache, 'histdata')
-
-    makedirs(dirdata, exists_ok = True)
-
-    path       = os.path.join(dirdata, filename)
-
-    with open(path, 'wb') as f:
-        buffrr = response.body
-
-        f.write(buffrr)
+from cache import write
 
 class HistDataSpider(CrawlSpider):
     name             = 'histdata'
@@ -60,17 +42,21 @@ class HistDataSpider(CrawlSpider):
             response = response,
             formid   = 'file_down',
             formdata = data,
-            callback = write_file
+            callback = lambda response: return write(response, HistDataSpider.name)
         )
 
         return req
 
 def main(args = None):
+    code      = os.EX_OK
+
     agent     = UserAgent()
     process   = CrawlerProcess({ 'USER_AGENT': agent.chrome })
 
     process.crawl(HistDataSpider)
     process.start()
+
+    return code
 
 if __name__ == '__main__':
     args = sys.argv[1:]
