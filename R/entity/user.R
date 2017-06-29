@@ -1,4 +1,4 @@
-library(RMySQL)
+library(DBI)
 library(bcrypt)
 
 source('constant.R')

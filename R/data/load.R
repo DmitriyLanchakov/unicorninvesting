@@ -1,3 +1,4 @@
+library(DBI)
 library(stringr)
 
 source('constant.R')
@@ -32,11 +33,9 @@ load.histdata <- function () {
       strptime(x, format = '%Y%m%d %H%M%S00', tz = 'EST')
     })
 
-    print(colnames(data))
-
     log.info('load.R', paste('Writing', csv, 'to table', table))
-
-    dbWriteTable(database, name = table, value = data, row.names = FALSE, append = TRUE,
+    
+    dbWriteTable(database, table, data, row.names = FALSE, overwrite = TRUE,
       field.types = list(
         datetime  = 'datetime',
         open      = 'decimal(10, 6)',

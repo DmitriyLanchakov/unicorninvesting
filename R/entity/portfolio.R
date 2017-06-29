@@ -1,4 +1,4 @@
-library(RMySQL)
+library(DBI)
 
 source('data/db.R')
 source('util/log.R')

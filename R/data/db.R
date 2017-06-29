@@ -1,4 +1,4 @@
-library(RMySQL)
+library(DBI)
 
 source('constant.R')
 source('util/utils.R')
@@ -8,7 +8,7 @@ source('util/utils.R')
 #' A database connection wrapper to RMySQL dbConnect
 db.connect    <- function (name = db.NAME, host = db.HOSTNAME, port = db.PORT,
   user = db.USERNAME, password = db.PASSWORD) {
-  driver      <- MySQL()
+  driver      <- RMySQL::MySQL()
   connection  <- dbConnect(driver, dbname = name, user = user,
     password = password, host = host, port = port)
 
