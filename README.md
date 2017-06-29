@@ -208,5 +208,5 @@ You should then have your terminal output as follows:
 
       **Example**
       ```console
-      $ python R/data/scrapers/histdata.py
+      $ python R/data/scrapers/scraper.py
       ```
