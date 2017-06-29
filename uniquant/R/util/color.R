@@ -1,4 +1,0 @@
-color.INFO    <- '\x1b[1;34m'
-color.SUCCESS <- '\x1b[1;32m'
-color.DANGER  <- '\x1b[1;31m'
-color.RESET   <- '\x1b[0m'

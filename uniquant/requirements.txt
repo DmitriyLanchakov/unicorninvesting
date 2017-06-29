@@ -1,3 +1,0 @@
-scrapy
-BeautifulSoup4
-fake-useragent
