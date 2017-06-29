@@ -1,9 +1,7 @@
 # imports - third-party modules
-from fake_useragent        import UserAgent
 from scrapy.spiders        import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
 from scrapy.http           import FormRequest
-from scrapy.crawler        import CrawlerProcess
 from bs4                   import BeautifulSoup
 
 # imports - module imports

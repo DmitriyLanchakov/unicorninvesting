@@ -1,2 +1,2 @@
 # module - scrapers.spiders
-from histdata import HistDataSpider
+from .histdata import HistDataSpider

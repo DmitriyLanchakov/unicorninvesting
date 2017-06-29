@@ -1,8 +1,12 @@
 # imports - standard modules
 import sys, os
 
+# imports - third-party imports
+from fake_useragent import UserAgent
+from scrapy.crawler import CrawlerProcess
+
 # imports - module imports
-from spiders import HistDataSpider
+from spiders        import HistDataSpider
 
 def main(args = None):
     code      = os.EX_OK
