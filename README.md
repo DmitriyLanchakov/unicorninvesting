@@ -228,5 +228,12 @@ You should then have your terminal output as follows:
       > holding   <- holding.get(portfolio, type = holding.FOREX)
 
       > back.test(holding, function (data) {
-          
+          # your strategy here.
+          random  <- sample(1:100, 1)
+
+          if ( (random %%2 ) == 0 ) {
+            return strategy.BUY
+          } else {
+            return strategy.SELL
+          }
         })
