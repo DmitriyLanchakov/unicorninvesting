@@ -16,7 +16,7 @@ def write(response, dirname):
 
     filepath   = os.path.join(dirdata, filename)
 
-    if not os.path.isfile(filepath):
+    if not os.path.exists(filepath) and not os.path.isfile(filepath):
         with open(filepath, 'wb') as f:
             buffrr = response.body
 

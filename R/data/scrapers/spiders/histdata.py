@@ -15,12 +15,12 @@ class HistDataSpider(CrawlSpider):
     rules            = [
         Rule(
             LinkExtractor(
-                allow = 'download-free-forex-historical-data/\?/[a-z]+/(-?[a-z]+)+/[a-z]{6}/[0-9]{4}/[0-9]{1,2}'
+                allow = 'download-free-forex-historical-data/\?/ascii/(-?[a-z]+)+/[a-z]{6}/[0-9]{4}/[0-9]{1,2}'
             )
         , callback    = 'parse_item'),
         Rule(
             LinkExtractor(
-                allow = 'download-free-forex(-historical)?-data/\?/([a-z]+/(-?[a-z]+)+(/([a-z]{6}|[A-Z]{6})?(/[0-9]{4})?)?)?'
+                allow = 'download-free-forex(-historical)?-data/\?/(ascii/(-?[a-z]+)+(/([a-z]{6}|[A-Z]{6})?(/[0-9]{4})?)?)?'
             )
         , follow      = True)
     ]

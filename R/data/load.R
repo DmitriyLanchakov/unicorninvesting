@@ -18,27 +18,32 @@ load.histdata <- function () {
   zips        <- file.path(dirpath, list.files(path = dirpath, pattern = pattern))
 
   for (i in 1:length(zips)) {
-    files    <- unzip(zips[i], list = TRUE)
-    csv      <- files$Name[1]
+    files     <- unzip(zips[i], list = TRUE)
+    csv       <- files$Name[1]
 
-    pair     <- sub('DAT_ASCII_', '', sub('_T_[0-9]{6}.csv', '', csv))
-    symbol   <- str_c(str_sub(pair, end = 3), "/", str_sub(pair, start = 4))
+    pair      <- sub('DAT_ASCII_', '', sub('_T_[0-9]{6}.csv', '', csv))
 
-    buffer   <- unz(zips[i], csv)
-    data     <- read.csv(buffer)
+    symbol    <- str_c(str_sub(pair, end = 3), str_sub(pair, start = 4))
+
+    buffer    <- unz(zips[i], csv)
+    data      <- read.csv(buffer)
 
     colnames(data)   <- c('datetime', 'open', 'close', 'volume')
 
     data['datetime'] <- lapply(data['datetime'], function (x) {
       strptime(x, format = '%Y%m%d %H%M%S00', tz = 'EST')
     })
+    data['symbol']   <- symbol
 
     log.info('load.R', paste('Writing', csv, 'to table', table))
     
     dbWriteTable(database, table, data, row.names = FALSE, overwrite = TRUE,
       field.types = list(
         datetime  = 'datetime',
+        symbol    = 'varchar(6)',
         open      = 'decimal(10, 6)',
+        high      = 'decimal(10, 6)',
+        low       = 'decimal(10, 6)',
         close     = 'decimal(10, 6)',
         volume    = 'bigint(20)'
       )

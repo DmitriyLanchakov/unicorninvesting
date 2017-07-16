@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS `uniquant_holding_forex`;
 DROP TABLE IF EXISTS `uniquant_holding`;
 DROP TABLE IF EXISTS `uniquant_portfolio`;
 DROP TABLE IF EXISTS `uniquant_users`;
+DROP TABLE IF EXISTS `uniquant_history`;
 
 CREATE TABLE `uniquant_users` (
   `ID`          BIGINT(20)      NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -47,7 +48,7 @@ CREATE TABLE `uniquant_holding_forex` (
 CREATE TABLE `uniquant_history` (
   `ID`          BIGINT(20)     NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `datetime`    DATETIME       NOT NULL,
-  `symbol`      VARCHAR(3)     NOT NULL,
+  `symbol`      VARCHAR(6)     NOT NULL,
   `open`        DECIMAL(10, 6),
   `high`        DECIMAL(10, 6),
   `low`         DECIMAL(10, 6),
