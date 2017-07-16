@@ -1,4 +1,5 @@
 library(DBI)
+library(stringr)
 
 source('data/db.R')
 source('util/log.R')
@@ -8,10 +9,9 @@ holding.FOREX <- 'FOREX'
 
 holding.get_table <- function (portfolio, type) {
   database    <- db.connect()
-  table       <- paste(db.PREFIX, 'holding', sep = '')
+  table       <- str_c(db.PREFIX, 'holding')
 
-  statement   <- paste("SELECT * FROM ", table, " WHERE portfolioID = '", portfolio$ID,
-    "'", " AND type = '", type, "'", sep = '')
+  statement   <- str_c("SELECT * FROM ", table, " WHERE portfolioID = '", portfolio$ID, "'", " AND type = '", type, "'")
 
   log.info('holding', paste('Executing statement:', statement))
 
@@ -27,18 +27,16 @@ holding.get   <- function (portfolio, type, params = NULL) {
 
   database    <- db.connect()
 
-  table       <- paste(db.PREFIX, 'holding_', sapply(type, tolower), sep = '')
-  statement   <- paste("SELECT * FROM ", table, " WHERE holdingID = '",
-    holding$ID, "'", sep = '')
+  table       <- str_c(db.PREFIX, 'holding_', sapply(type, tolower))
+  statement   <- str_c("SELECT * FROM ", table, " WHERE holdingID = '", holding$ID, "'")
 
   if ( !is.null(params) ) {
     columns   <- names(params)
 
-    fcolumns  <- join(paste("`", columns, "`", sep = ''), ', ')
-    fvalues   <- join(paste("'",  params, "'", sep = ''), ', ')
+    fcolumns  <- join(str_c("`", columns, "`"), ', ')
+    fvalues   <- join(str_c("'",  params, "'"), ', ')
 
-    statement <- paste(statement, " AND (", fcolumns, ") IN ((", fvalues, "))",
-      sep = '')
+    statement <- str_c(statement, " AND (", fcolumns, ") IN ((", fvalues, "))")
   }
 
   log.info('holding', paste('Executing statement:', statement))
@@ -67,7 +65,7 @@ holding.add   <- function (portfolio, type, params) {
 
   holding     <- holding.get_table(portfolio, type)
 
-  table       <-  paste('holding_', sapply(holding$type, tolower), sep = '')
+  table       <- str_c('holding_', sapply(holding$type, tolower))
   values      <- append(list(holdingID = holding$ID), params)
 
   db.insert(table, values)

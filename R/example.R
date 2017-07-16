@@ -46,7 +46,7 @@ if ( !user.exists(username) ) {
 
 portfolio   <- portfolio.get(user, name = portname)
 if ( is.null(portfolio) ) {
-  log.info('setup', paste('Portfolio "', portname, '" does not exist.', sep = ''))
+  log.info('setup', str_c('Portfolio "', portname, '" does not exist.'))
 
   portfolio <- portfolio.register(user, name = portname)
 }
@@ -56,19 +56,22 @@ holding.add(portfolio, type = holding.FOREX, params = list(
     to     = forex.USD,
     amount = 300
 ))
-holding.add(portfolio, type = holding.FOREX, params = list(
-    from   = forex.GBP,
-    to     = forex.CAD,
-    amount = 500
-))
 
 holding     <- holding.get(portfolio, type = holding.FOREX)
-# pairs       <- str_c(holding$from, holding$to)
+pairs       <- str_c(holding$from, holding$to)
 
-# cache.FOREX(pairs)
+cache.FOREX(pairs)
 
-back.test(holding, holding.FOREX, function (data) {
-  
-})
+strategy    <- function (data) {
+  random    <- sample(1:100, 1)
+
+  if ( is.equal(random %% 2, 0) ) {
+    return strategy.BUY
+  } else {
+    return strategy.SELL
+  }
+}
+
+back.test(holding, strategy)
 
 
