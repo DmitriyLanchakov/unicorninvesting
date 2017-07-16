@@ -6,6 +6,7 @@ source('entity/portfolio.R')
 source('entity/holding.R')
 
 source('data/cache.R')
+source('backtest/test.R')
 
 log.DEBUG   <<- TRUE
 
@@ -60,6 +61,13 @@ holding.add(portfolio, type = holding.FOREX, params = list(
 ))
 
 holding     <- holding.get(portfolio, type = holding.FOREX)
-pairs       <- paste(holding$from, holding$to, sep = "/")
+# pairs       <- paste(holding$from, holding$to, sep = "/")
 
-cache.FOREX(pairs)
+# cache.FOREX(pairs)
+
+back.test(holding, function (data) {
+  # data - uniquant_history narrowed down to the particular holding.
+  
+})
+
+

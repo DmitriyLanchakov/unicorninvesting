@@ -9,7 +9,7 @@ cache.histdata <- function (refresh = FALSE) {
 
   log.info('cache.R', paste('Executing command', command))
 
-  system(command)
+  # system(command)
 
   load.histdata()
 }

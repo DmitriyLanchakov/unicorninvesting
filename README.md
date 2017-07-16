@@ -210,3 +210,23 @@ You should then have your terminal output as follows:
       ```console
       $ python R/data/scrapers/scraper.py
       ```
+
+* #### Backtest
+  * `back.test`
+
+    A backtest runner to test on a particular holding.
+
+    **Example**
+    ```r
+      > source('entity/user.R')
+      > source('entity/portfolio.R')
+      > source('entity/holding.R')
+      > source('data/cache.R')
+
+      > user      <- user.get('achillesrasquinha', '12345')
+      > portfolio <- portfolio.get(user, name = 'My Portfolio')
+      > holding   <- holding.get(portfolio, type = holding.FOREX)
+
+      > back.test(holding, function (data) {
+
+      })
