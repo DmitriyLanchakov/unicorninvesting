@@ -6,12 +6,20 @@ source('util/utils.R')
 
 source('data/db.R')
 
-load.histdata <- function () {
+load.histdata <- function (pairs = NULL) {
   database    <- db.connect()
   table       <- str_c(db.PREFIX, 'history')
 
   dirpath     <- file.path(path.CACHE, 'histdata')
-  pattern     <- 'HISTDATA_COM_ASCII_[A-Z]{6}_T.*\\.zip'
+
+  if ( is.null(pairs) ) {
+    group     <- '[A-Z]{6}'
+  } else {
+    deduped   <- unique(pairs)    
+    group     <- str_c('(', join(deduped, '|'), ')')
+  }
+
+  pattern     <- str_c('HISTDATA_COM_ASCII_', group, '_T.*\\.zip')
 
   log.info('load.R', paste('Searching for files of type', pattern))
 
@@ -36,21 +44,30 @@ load.histdata <- function () {
     data['symbol']   <- symbol
 
     log.info('load.R', paste('Writing', csv, 'to table', table))
-    
-    dbWriteTable(database, table, data, row.names = FALSE, overwrite = TRUE,
-      field.types = list(
-        datetime  = 'datetime',
-        symbol    = 'varchar(6)',
-        open      = 'decimal(10, 6)',
-        high      = 'decimal(10, 6)',
-        low       = 'decimal(10, 6)',
-        close     = 'decimal(10, 6)',
-        volume    = 'bigint(20)'
-      )
+
+    tryCatch(
+      {
+        dbWriteTable(database, table, data, row.names = FALSE, overwrite = TRUE,
+          field.types = list(
+            datetime  = 'datetime',
+            symbol    = 'varchar(6)',
+            open      = 'decimal(10, 6)',
+            high      = 'decimal(10, 6)',
+            low       = 'decimal(10, 6)',
+            close     = 'decimal(10, 6)',
+            volume    = 'bigint(20)'
+          )
+        )
+
+        log.info('load.R', 'Write Successful')
+      },
+      error    = function (error) {
+        error  <- paste('Unable to write', csv, 'to the database')
+        log.danger('db', error)
+      },
+      finally  = function ( ) {
+        db.disconnect(database)
+      }
     )
-
-    log.info('load.R', 'Write Successful')
   }
-
-  db.disconnect(database)
 }

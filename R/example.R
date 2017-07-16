@@ -1,3 +1,5 @@
+library(stringr)
+
 source('constant.R')
 source('util/utils.R')
 
@@ -50,23 +52,22 @@ if ( is.null(portfolio) ) {
 }
 
 holding.add(portfolio, type = holding.FOREX, params = list(
-    from   = forex.USD,
-    to     = forex.CAD,
+    from   = forex.EUR,
+    to     = forex.USD,
     amount = 300
 ))
 holding.add(portfolio, type = holding.FOREX, params = list(
-    from   = forex.INR,
-    to     = forex.USD,
+    from   = forex.GBP,
+    to     = forex.CAD,
     amount = 500
 ))
 
 holding     <- holding.get(portfolio, type = holding.FOREX)
-# pairs       <- paste(holding$from, holding$to, sep = "/")
+# pairs       <- str_c(holding$from, holding$to)
 
 # cache.FOREX(pairs)
 
-back.test(holding, function (data) {
-  # data - uniquant_history narrowed down to the particular holding.
+back.test(holding, holding.FOREX, function (data) {
   
 })
 

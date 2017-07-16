@@ -43,12 +43,12 @@ holding.get   <- function (portfolio, type, params = NULL) {
 
   log.info('holding', paste('Executing statement:', statement))
 
-  tresult    <- dbGetQuery(database, statement)
-  tresult$ID <- NULL
+  tresult     <- dbGetQuery(database, statement)
+  tresult$ID  <- NULL
 
   colnames(tresult)[1] <- "ID"
 
-  holding    <- merge(holding, tresult, key = "ID")
+  holding     <- merge(holding, tresult, key = "ID")
 
   db.disconnect(database)
 

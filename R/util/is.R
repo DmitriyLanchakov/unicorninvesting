@@ -17,6 +17,12 @@ is.installed  <- function (package) {
   return(installed)
 }
 
+is.equal      <- function (x, y) {
+  evaluation  <- x == y
+
+  return(evaluation)
+}
+
 is.true       <- function (x) {
   evaluation  <- x == TRUE
 

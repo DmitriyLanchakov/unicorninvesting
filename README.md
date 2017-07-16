@@ -227,6 +227,11 @@ You should then have your terminal output as follows:
       > portfolio <- portfolio.get(user, name = 'My Portfolio')
       > holding   <- holding.get(portfolio, type = holding.FOREX)
 
-      > back.test(holding, function (data) {
-
-      })
+      > back.test(holding, holding.FOREX, function (data) {
+          # your strategy here
+          if ( <buy_strategy> ) {
+            return strategy.BUY
+          } else if ( <sell_strategy> ) {
+            return strategy.SELL
+          }
+        })
