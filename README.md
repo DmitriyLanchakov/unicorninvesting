@@ -1,5 +1,5 @@
 <div align="center">
-  # uniquant
+  <h1>uniquant</h1>
 </div>
 
 ### Table of Contents
