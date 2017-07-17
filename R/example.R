@@ -20,7 +20,7 @@ gender      <- gender.MALE
 
 portname    <- 'My Portfolio'
 
-if ( !user.exists(username) ) {
+if ( !is.true(user.exists(username)) ) {
   log.info('setup', paste('Registering User:', username))
 
   user      <- user.register(
@@ -33,7 +33,7 @@ if ( !user.exists(username) ) {
     gender    = gender.MALE
   )
 
-  if ( !is.null(user) ) {
+  if ( !is.na(user) || !is.null(user) ) {
     log.success('setup', paste('Successfully registered User:', username))
   } else {
     log.danger('setup', paste('Error in registering User:', username))
@@ -43,31 +43,23 @@ if ( !user.exists(username) ) {
 }
 
 portfolio   <- portfolio.get(user, name = portname)
-if ( is.null(portfolio) ) {
-  log.info('setup', join(c('Portfolio "', portname, '" does not exist.')))
+if ( is.na(portfolio) ) {
+  log.info('setup', join(c('Portfolio"', portname, '" does not exist.')))
 
   portfolio <- portfolio.register(user, name = portname)
 }
 
-holding.add(portfolio, type = holding.FOREX, params = list(
+holding     <- holding.add(portfolio, type = holding.FOREX, params = list(
     from   = forex.EUR,
     to     = forex.USD,
     amount = 300
 ))
 
-holding     <- holding.get(portfolio, type = holding.FOREX)
 pairs       <- paste(holding$from, holding$to, sep = '')
-
 cache.FOREX(pairs)
 
-back.test(holding, function (data) {
-  random    <- sample(1:100, 1)
-
-  if ( is.equal(random %% 2, 0) ) {
-    return strategy.BUY
-  } else {
-    return strategy.SELL
-  }
+back.test(user, holding, function (data) {
+  
 })
 
 

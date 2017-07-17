@@ -9,6 +9,10 @@ source('util/utils.R')
 db.connect    <- function (name = db.NAME, host = db.HOSTNAME, port = db.PORT,
   user = db.USERNAME, password = db.PASSWORD) {
   driver      <- RMySQL::MySQL()
+
+  log.info('db', join(c('Connecting to database ', name, ' with user "', user,
+    '"@"', host, '" using password ', password)))
+
   connection  <- dbConnect(driver, dbname = name, user = user,
     password = password, host = host, port = port)
 

@@ -4,33 +4,35 @@ INSTALLED_PACKAGES <- rownames(installed.packages())
 #'
 #' Checks whether a package has been installed.
 #' @param string package name
-#' @return logical TRUE if the package has been installed.
+#' @return logical TRUE if the package has been installed, else FALSE.
 #' @examples
 #' is.installed('ggplot2')
-is.installed  <- function (package) {
-  if (package %in% INSTALLED_PACKAGES) {
-    installed <- TRUE
-  } else {
-    installed <- FALSE
-  }
+is.installed   <- function (package) {
+ 	evaluation <- package %in% INSTALLED_PACKAGES
 
-  return(installed)
+ 	return(evaluation)
 }
 
-is.equal      <- function (x, y) {
-  evaluation  <- x == y
+is.equal       <- function (x, y) {
+ 	evaluation <- x == y
 
-  return(evaluation)
+ 	return(evaluation)
 }
 
-is.true       <- function (x) {
-  evaluation  <- x == TRUE
+is.true        <- function (x) {
+ 	evaluation <- is.equal(x, TRUE)
 
-  return(evaluation)
+ 	return(evaluation)
 }
 
-is.empty      <- function (x) {
-  evaluation  <- length(x) == 0
+is.empty       <- function (x) {
+	if ( is.data.frame(x) ) {
+		length <- nrow(x)
+	} else {
+		length <- length(x)
+	}
 
-  return(evaluation)
+	evaluation <- is.equal(length, 0)
+
+ 	return(evaluation)
 }

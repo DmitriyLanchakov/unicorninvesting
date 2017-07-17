@@ -23,14 +23,16 @@ log.format  <- function (tag, message, type = NULL) {
       color <- color.INFO
     } else if ( is.equal(type, log.SUCCESS) ) {
       color <- color.SUCCESS
+    } else if ( is.equal(type, log.WARN) ) {
+      color <- color.WARNING
     } else if ( is.equal(type, log.DANGER) ) {
       color <- color.DANGER
     }
 
-    tag     <- paste(color, tag, color.RESET, sep = '')
+    tag     <- join(c(color, tag, color.RESET))
   }
 
-  statement <- paste(tag, ': ', message, sep = '')
+  statement <- join(c(tag, ': ', message))
 
   return(statement)
 }

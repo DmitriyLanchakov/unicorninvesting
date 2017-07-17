@@ -9,7 +9,7 @@ strategy.SELL   <- 'SELL'
 
 back.test       <- function (user, holding, strategy, from = '', to = Sys.time(), tick = 1) {
     if ( is.equal(holding$type, holding.FOREX) ) {
-        symbol  <- str_c(holding$from, holding$to)
+        symbol  <- paste(holding$from, holding$to, sep = '')
     } else if ( is.equal(holding$type, holding.STOCK) ) {
         symbol  <- holding$symbol
     }

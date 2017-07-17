@@ -19,17 +19,15 @@ user.get_by_username <- function (username) {
 
   db.disconnect(database)
 
-  if ( is.equal(nrow(result), 0) ) {
-    return(NULL)
-  } else {
-    return(result)
-  }
+  if ( is.empty(result) ) { result <- NA }
+
+  return(result)
 }
 
 user.exists   <- function (username) {
   result      <- user.get_by_username(username)
 
-  exists      <- !is.null(result)
+  exists      <- !is.na(result)
 
   return(exists)
 }
@@ -37,7 +35,7 @@ user.exists   <- function (username) {
 user.get      <- function (username, password) {
   result      <- user.get_by_username(username)
 
-  if ( !is.null(result) ) {
+  if ( !is.na(result) ) {
     hashpass  <- result$password
     validated <- checkpw(password, hashpass)
 
@@ -48,8 +46,6 @@ user.get      <- function (username, password) {
 
       result  <- NULL
     }
-  } else {
-    result    <- NA
   }
 
   return(result)

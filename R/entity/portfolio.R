@@ -10,7 +10,7 @@ portfolio.get <- function (user, name = NULL) {
   statement   <- join(c("SELECT * FROM ", table, " WHERE userID = '", user$ID, "'"))
 
   if ( !is.null(name) ) {
-    fname     <- join(join(c("'", name, "'")), ", ")
+    fname     <- join(paste('"', name, '"', sep = ''), ', ')
     statement <- join(c(statement, " AND name IN (", fname, ")"))
   }
 
@@ -20,11 +20,9 @@ portfolio.get <- function (user, name = NULL) {
 
   db.disconnect(database)
 
-  if ( is.equal(nrow(result), 0) ) {
-    return(NULL)
-  } else {
-    return(result)
-  }
+  if ( is.empty(result) ) { result <- NA }
+
+  return(result)
 }
 
 portfolio.register    <- function (user, name) {
