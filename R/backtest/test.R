@@ -7,7 +7,7 @@ source('entity/history.R')
 strategy.BUY    <- 'BUY'
 strategy.SELL   <- 'SELL'
 
-back.test       <- function (holding, strategy, from = '', to = Sys.time(), tick = 1) {
+back.test       <- function (user, holding, strategy, from = '', to = Sys.time(), tick = 1) {
     if ( is.equal(holding$type, holding.FOREX) ) {
         symbol  <- str_c(holding$from, holding$to)
     } else if ( is.equal(holding$type, holding.STOCK) ) {
@@ -25,9 +25,9 @@ back.test       <- function (holding, strategy, from = '', to = Sys.time(), tick
         evaluation <- strategy(frame)
 
         if ( is.equal(evaluation, strategy.BUY) ) {
-
+            trade.buy(user, holding)
         } else if ( is.equal(evaluation, strategy.SELL) ) {
-
+            trade.sell(user, holding)
         }
 
         Sys.sleep(tick)

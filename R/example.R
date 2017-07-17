@@ -62,7 +62,7 @@ pairs       <- str_c(holding$from, holding$to)
 
 cache.FOREX(pairs)
 
-strategy    <- function (data) {
+back.test(holding, function (data) {
   random    <- sample(1:100, 1)
 
   if ( is.equal(random %% 2, 0) ) {
@@ -70,8 +70,6 @@ strategy    <- function (data) {
   } else {
     return strategy.SELL
   }
-}
-
-back.test(holding, strategy)
+})
 
 

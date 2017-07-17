@@ -3,7 +3,15 @@ source('util/is.R')
 source('util/install.R')
 source('util/assign.R')
 
-join     <- function (list, seperator) {
+#' join
+#'
+#' Returns a string seperated by a defined seperator.
+#' @param list list of strings
+#' @param seperator, defaults to ''
+#' @examples
+#' join(c('a', 'b'), seperator = ', ')
+#' [1] "a, b"
+join     <- function (list, seperator = '') {
   string <- paste(list, collapse = seperator)
 
   return(string)

@@ -1,4 +1,6 @@
-# uniquant
+<div align="center">
+  # uniquant
+</div>
 
 ### Table of Contents
 * [Installation](#installation)
@@ -11,7 +13,14 @@
 
 ### Installation
 Go ahead and install necessary dependencies:
+* R Dependencies
+  
+  ```console
+  $ Rscript setup.R
+  ```
+
 * Python Dependencies
+
   ```console
   $ pip install -r requirements.txt
   ```
@@ -37,11 +46,6 @@ Go ahead and install necessary dependencies:
 | `UNIQUANT_PASSWORD_SALT`  | `10`                           | A numeric salt value for the **bcrypt** password hashing algorithm. Bigger the number, bigger the complexity for encryption/decryption.
 
 ### Example
-Run the `setup.R` script as follows:
-```console
-$ Rscript setup.R
-```
-
 Run the `example.R` script as follows:
 ```console
 $ Rscript example.R
@@ -55,6 +59,7 @@ $ Rscript example.R
 ```
 
 You should then have your terminal output as follows:
+
 ![](.github/debugging.png)
 
 ### Documentation
@@ -156,8 +161,8 @@ You should then have your terminal output as follows:
       > user      <- user.get('achillesrasquinha', '12345')
       > portfolio <- portfolio.get(user, name = 'My Portfolio')
       > holding   <- holding.add(portfolio, type = holding.FOREX, params = list(
-      +   from   = forex.USD,
-      +   to     = forex.CAD,
+      +   from   = forex.EUR,
+      +   to     = forex.USD,
       +   amount = 300  
       + ))
       ```
@@ -174,10 +179,9 @@ You should then have your terminal output as follows:
 
       > user      <- user.get('achillesrasquinha', '12345')
       > portfolio <- portfolio.get(user, name = 'My Portfolio')
-      > holding.add(portfolio, type = holding.FOREX)
-        ID portfolioID  type from  to amount
-      1  1           1 FOREX  USD CAD    300
-      2  1           1 FOREX  INR USD    500
+      > holding.get(portfolio, type = holding.FOREX)
+        ID portfolioID from  to amount
+      1  1           1  EUR USD    300
       ```
 
 * #### Data

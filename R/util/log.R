@@ -1,4 +1,5 @@
 source('util/color.R')
+source('util/is.R')
 
 log.DEBUG   <<- FALSE
 log.INFO    <-  'info'
@@ -16,15 +17,15 @@ log.DANGER  <-  'danger'
 #' log.format('test.R', 'My Message')
 log.format  <- function (tag, message, type = NULL) {
   if ( !is.null(type) ) {
-    if ( type == log.INFO ) {
+    if ( is.equal(type, log.INFO) ) {
       color <- color.INFO
-    } else if ( type == log.SUCCESS ) {
+    } else if ( is.equal(type, log.SUCCESS) ) {
       color <- color.SUCCESS
-    } else if ( type == log.DANGER ) {
+    } else if ( is.equal(type, log.DANGER) ) {
       color <- color.DANGER
     }
 
-    tag     <-  paste(color, tag, color.RESET, sep = '')
+    tag     <- paste(color, tag, color.RESET, sep = '')
   }
 
   statement <- paste(tag, ': ', message, sep = '')

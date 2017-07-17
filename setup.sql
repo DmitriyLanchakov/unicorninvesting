@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS `uniquant_holding`;
 DROP TABLE IF EXISTS `uniquant_portfolio`;
 DROP TABLE IF EXISTS `uniquant_users`;
 DROP TABLE IF EXISTS `uniquant_history`;
+DROP TABLE IF EXISTS `uniquant_trade`;
 
 CREATE TABLE `uniquant_users` (
   `ID`          BIGINT(20)      NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -55,4 +56,8 @@ CREATE TABLE `uniquant_history` (
   `close`       DECIMAL(10, 6),
   `volume`      BIGINT(20),
   UNIQUE KEY    `unique_key`(`datetime`, `symbol`)
+);
+
+CREATE TABLE `uniquant_trade` (
+  
 );

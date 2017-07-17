@@ -22,31 +22,32 @@ holding.get_table <- function (portfolio, type) {
   return(holding)
 }
 
-holding.get   <- function (portfolio, type, params = NULL) {
-  holding     <- holding.get_table(portfolio, type)
+holding.get    <- function (portfolio, type, params = NULL) {
+  holding      <- holding.get_table(portfolio, type)
 
-  database    <- db.connect()
+  database     <- db.connect()
 
-  table       <- str_c(db.PREFIX, 'holding_', sapply(type, tolower))
-  statement   <- str_c("SELECT * FROM ", table, " WHERE holdingID = '", holding$ID, "'")
+  table        <- str_c(db.PREFIX, 'holding_', sapply(type, tolower))
+  statement    <- str_c("SELECT * FROM ", table, " WHERE holdingID = '", holding$ID, "'")
 
   if ( !is.null(params) ) {
-    columns   <- names(params)
+    columns    <- names(params)
 
-    fcolumns  <- join(str_c("`", columns, "`"), ', ')
-    fvalues   <- join(str_c("'",  params, "'"), ', ')
+    fcolumns   <- join(str_c("`", columns, "`"), ', ')
+    fvalues    <- join(str_c("'",  params, "'"), ', ')
 
-    statement <- str_c(statement, " AND (", fcolumns, ") IN ((", fvalues, "))")
+    statement  <- str_c(statement, " AND (", fcolumns, ") IN ((", fvalues, "))")
   }
 
   log.info('holding', paste('Executing statement:', statement))
 
-  tresult     <- dbGetQuery(database, statement)
-  tresult$ID  <- NULL
+  tresult      <- dbGetQuery(database, statement)
+  tresult$ID   <- NULL
+  tresult$type <- NULL
 
   colnames(tresult)[1] <- "ID"
 
-  holding     <- merge(holding, tresult, key = "ID")
+  holding      <- merge(holding, tresult, key = "ID")
 
   db.disconnect(database)
 
