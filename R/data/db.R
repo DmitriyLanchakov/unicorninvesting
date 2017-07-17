@@ -29,8 +29,8 @@ db.insert     <- function (table, values) {
 
   columns     <- names(values)
 
-  fcolumns    <- join(join(c("`", columns, "`")), ', ')
-  fvalues     <- join(join(c("'",  values, "'")), ', ')
+  fcolumns    <- join(paste("`", columns, "`", sep = ''), ', ')
+  fvalues     <- join(paste("'",  values, "'", sep = ''), ', ')
 
   statement   <- paste('INSERT INTO', table, '(', fcolumns, ') VALUES (', fvalues, ')')
 
