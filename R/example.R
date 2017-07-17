@@ -44,7 +44,7 @@ if ( !user.exists(username) ) {
 
 portfolio   <- portfolio.get(user, name = portname)
 if ( is.null(portfolio) ) {
-  log.info('setup', str_c('Portfolio "', portname, '" does not exist.'))
+  log.info('setup', join(c('Portfolio "', portname, '" does not exist.')))
 
   portfolio <- portfolio.register(user, name = portname)
 }
@@ -56,7 +56,7 @@ holding.add(portfolio, type = holding.FOREX, params = list(
 ))
 
 holding     <- holding.get(portfolio, type = holding.FOREX)
-pairs       <- str_c(holding$from, holding$to)
+pairs       <- join(c(holding$from, holding$to))
 
 cache.FOREX(pairs)
 

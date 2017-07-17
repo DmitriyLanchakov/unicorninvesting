@@ -57,7 +57,3 @@ CREATE TABLE `uniquant_history` (
   `volume`      BIGINT(20),
   UNIQUE KEY    `unique_key`(`datetime`, `symbol`)
 );
-
-CREATE TABLE `uniquant_trade` (
-  
-);
