@@ -41,8 +41,8 @@ Go ahead and install necessary dependencies:
 | `UNIQUANT_DB_HOST`        | `"127.0.0.1"`                  | Host Name for your database
 | `UNIQUANT_DB_PORT`        | `0`                            | Port Number for your database
 | `UNIQUANT_DB_USER`        | `"uniquant_admin"`             | A database username
-| `UNIQUANT_DB_PASS`        | `"12345"`                      | Password for the said username
-| `UNIQUANT_DB_PREFIX`      | `UNIQUANT_DB_NAME_tablename`   | Prefixes for table names
+| `UNIQUANT_DB_PASS`        | `""`                           | Password for the said username
+| `UNIQUANT_DB_PREFIX`      | `"uniquant_"`                  | Prefixes for table names
 | `UNIQUANT_PASSWORD_SALT`  | `10`                           | A numeric salt value for the **bcrypt** password hashing algorithm. Bigger the number, bigger the complexity for encryption/decryption.
 
 ### Example
@@ -107,7 +107,7 @@ You should then have your terminal output as follows:
 
     * `user.get`
 
-      A helper function to retrieve user information. Requires a `username` and `password`. Returns `NULL` if not a valid `username` or `password`
+      A helper function to retrieve user information. Requires a `username` and `password`. Returns `NA` user does not exists and `NULL` if if not a valid `username` and `password`.
 
       **Example**
       ```r

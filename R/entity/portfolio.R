@@ -5,13 +5,13 @@ source('util/log.R')
 
 portfolio.get <- function (user, name = NULL) {
   database    <- db.connect()
-  table       <- paste(db.PREFIX, 'portfolio', sep = '')
+  table       <- join(c(db.PREFIX, 'portfolio'))
 
-  statement   <- paste("SELECT * FROM ", table, " WHERE userID = '", user$ID, "'", sep = '')
+  statement   <- join(c("SELECT * FROM ", table, " WHERE userID = '", user$ID, "'"))
 
   if ( !is.null(name) ) {
-    fname     <- join(paste("'", name, "'", sep = ''), ", ")
-    statement <- paste(statement, " AND name IN (", fname, ")", sep = '')
+    fname     <- join(join(c("'", name, "'")), ", ")
+    statement <- join(c(statement, " AND name IN (", fname, ")"))
   }
 
   log.info('portfolio', paste('Executing statement:', statement))
@@ -20,7 +20,7 @@ portfolio.get <- function (user, name = NULL) {
 
   db.disconnect(database)
 
-  if ( nrow(result) == 0 ) {
+  if ( is.equal(nrow(result), 0) ) {
     return(NULL)
   } else {
     return(result)

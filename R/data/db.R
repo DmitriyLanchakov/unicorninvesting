@@ -25,12 +25,12 @@ db.clear      <- function (result) {
 
 db.insert     <- function (table, values) {
   database    <- db.connect()
-  table       <- paste(db.PREFIX, table, sep = '')
+  table       <- join(c(db.PREFIX, table))
 
   columns     <- names(values)
 
-  fcolumns    <- join(paste("`", columns, "`", sep = ''), ', ')
-  fvalues     <- join(paste("'",  values, "'", sep = ''), ', ')
+  fcolumns    <- join(join(c("`", columns, "`")), ', ')
+  fvalues     <- join(join(c("'",  values, "'")), ', ')
 
   statement   <- paste('INSERT INTO', table, '(', fcolumns, ') VALUES (', fvalues, ')')
 

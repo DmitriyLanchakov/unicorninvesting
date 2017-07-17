@@ -9,9 +9,9 @@ source('entity/portfolio.R')
 
 user.get_by_username <- function (username) {
   database  <- db.connect()
-  table     <- paste(db.PREFIX, 'users', sep = '')
+  table     <- join(c(db.PREFIX, 'users'))
 
-  statement <- paste("SELECT * FROM ", table, " WHERE username = '", username, "'", sep = '')
+  statement <- join(c("SELECT * FROM ", table, " WHERE username = '", username, "'"))
 
   log.info('user', paste('Executing statement:', statement))
 
@@ -19,7 +19,7 @@ user.get_by_username <- function (username) {
 
   db.disconnect(database)
 
-  if ( nrow(result) == 0 ) {
+  if ( is.equal(nrow(result), 0) ) {
     return(NULL)
   } else {
     return(result)
@@ -48,6 +48,8 @@ user.get      <- function (username, password) {
 
       result  <- NULL
     }
+  } else {
+    result    <- NA
   }
 
   return(result)
