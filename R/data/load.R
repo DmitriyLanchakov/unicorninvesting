@@ -15,7 +15,7 @@ load.histdata <- function (pairs = NULL) {
   if ( is.null(pairs) ) {
     group     <- '[A-Z]{6}'
   } else {
-    deduped   <- unique(pairs)    
+    deduped   <- unique(pairs)
     group     <- str_c('(', join(deduped, '|'), ')')
   }
 

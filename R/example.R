@@ -56,7 +56,7 @@ holding.add(portfolio, type = holding.FOREX, params = list(
 ))
 
 holding     <- holding.get(portfolio, type = holding.FOREX)
-pairs       <- join(c(holding$from, holding$to))
+pairs       <- paste(holding$from, holding$to, sep = '')
 
 cache.FOREX(pairs)
 
