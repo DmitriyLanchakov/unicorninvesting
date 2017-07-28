@@ -215,7 +215,7 @@ You should then have your terminal output as follows:
       $ python R/data/scrapers/scraper.py
       ```
 
-* #### Backtest
+* #### Backtesting
   * `back.test`
 
     A backtester to test on a particular holding.
@@ -226,18 +226,39 @@ You should then have your terminal output as follows:
       > source('entity/portfolio.R')
       > source('entity/holding.R')
       > source('data/cache.R')
+        
+      > source('back/test.R')
+      > source('entity/order.R')
 
       > user      <- user.get('achillesrasquinha', '12345')
       > portfolio <- portfolio.get(user, name = 'My Portfolio')
       > holding   <- holding.get(portfolio, type = holding.FOREX)
+      > seed      <- 10000 # initial seed value.
 
-      > back.test(holding, function (data) {
+      > back.test(holding, seed, function (data) {
           # your strategy here.
+
+          # `data` is of the following format:
+          # | ID | datetime | symbol | open | high | low | close | volumne |
+          # datetime and OHLCV are also called "lines", in this case - 6 lines.
+          # In case of FX, open is synonymous to 'bid' while close is synonymous to 'ask'.
+          
+          # Accessing values are done as follows:
+          # Accessing current market line.
+          # tail(data, n = 1)[0,] <-  current market line (or the last trade line).
+
+          # Accessing current, previous market line.
+          # tail(data, n = 2)[0,] <- previous market line.
+          # tail(data, n = 2)[1,] <-  current market line.
+
+          # buy when even, sell when odd.
           random  <- sample(1:100, 1)
 
-          if ( (random %%2 ) == 0 ) {
-            return strategy.BUY
+          if ( is.equal(random %% 2, 0) ) {
+            order <- list(symbol = 'EURUSD', units = 1000, type = order.MARKET, trade = trade.BUY)
           } else {
-            return strategy.SELL
+            order <- list(symbol = 'EURUSD', units = 1000, type = order.MARKET, trade = trade.SELL)
           }
+
+          return(order)
         })

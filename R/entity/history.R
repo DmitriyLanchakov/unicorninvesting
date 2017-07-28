@@ -1,15 +1,16 @@
 library(DBI)
-library(stringr)
+library(lubridate)
 
 source('data/db.R')
 source('util/utils.R')
 
-history.get <- function (symbol, from = '', to = Sys.time()) {
-	database    <- db.connect()
-  	table       <- str_c(db.PREFIX, 'history')
+history.get     <- function (symbol, from = lubridate::origin, to = now()) {
+		database    <- db.connect()
+  	table       <- join(c(db.PREFIX, 'history'))
 
-  	fsymbol     <- join(str_c("'", symbol, "'"), ", ")
-  	statement   <- str_c("SELECT * FROM ", table, " WHERE symbol IN (", fsymbol, ")")
+  	fsymbol     <- join(paste("'", symbol, "'", sep = ''), ", ")
+  	statement   <- paste("SELECT * FROM ", table, " WHERE symbol IN (", fsymbol,
+  		") AND datetime BETWEEN '", from, "' AND '", to, "'", sep = '')
 
   	log.info('history', paste('Executing statement:', statement))
 

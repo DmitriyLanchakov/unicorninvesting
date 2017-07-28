@@ -1,7 +1,11 @@
-trade.buy  <- function (user, holding) {
+library(lubridate)
 
-}
+trade.BUY   <- 'BUY'
+trade.SELL  <- 'SELL'
 
-trade.sell <- function (user, holding) {
-	
+trade.trade <- function (symbol, units, type, rate, at = now()) {
+	price     <- units * rate
+  order     <- list(symbol = symbol, units = units, time = at, price = price, rate = rate)
+
+  return(order)
 }

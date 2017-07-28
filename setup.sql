@@ -42,7 +42,7 @@ CREATE TABLE `uniquant_holding_forex` (
   `holdingID`   BIGINT(20)     NOT NULL,
   `from`        VARCHAR(3)     NOT NULL,
   `to`          VARCHAR(3)     NOT NULL,
-  `amount`      DECIMAL(10, 2) NOT NULL,
+  `units`       INTEGER        NOT NULL,
   FOREIGN KEY   (`holdingID`)  REFERENCES `uniquant_holding`(`ID`)
 );
 
