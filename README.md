@@ -262,3 +262,8 @@ You should then have your terminal output as follows:
 
           return(order)
         })
+    ```
+
+    Run the backtester using the example.R script as follows:
+    
+    ![](.github/back-tester.gif)
